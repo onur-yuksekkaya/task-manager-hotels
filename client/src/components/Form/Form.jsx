@@ -6,10 +6,10 @@ export default function Form({ children, onSubmit, schema = {} }) {
   const {
     register,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors, dirtyFields },
   } = useForm({
     resolver: useYupValidationResolver(schema),
-    mode: 'onSubmit',
+    mode: 'onChange',
     reValidateMode: 'onChange',
   });
 
@@ -22,7 +22,7 @@ export default function Form({ children, onSubmit, schema = {} }) {
                 ...child.props,
                 register,
                 errors,
-                isDirty,
+                dirtyFields,
                 key: child.props.name,
               },
             })

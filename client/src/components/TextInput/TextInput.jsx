@@ -8,9 +8,19 @@ export default function TextInput({
   placeholder,
   register,
   errors,
-  isDirty,
+  dirtyFields,
   ...rest
 }) {
+  const createValidityCSS = () => {
+    if (dirtyFields[name] && errors[name]) {
+      return 'focus:border-red-500 border-red-500';
+    } else if (dirtyFields[name] && !errors[name]) {
+      return 'focus:border-green-500 border-green-500';
+    } else {
+      return '';
+    }
+  };
+
   return (
     <div className="py-2">
       <label
@@ -22,7 +32,7 @@ export default function TextInput({
       <input
         id={id}
         type={type}
-        className="block h-12 w-full pl-5 pr-12 sm:text-md border rounded-md invalid:border-red-500 valid:border-green-500 focus:outline-none focus:border-indigo-500 border-slate-300"
+        className={`block h-12 w-full pl-5 pr-12 sm:text-md border rounded-md focus:outline-none focus:border-indigo-500 border-slate-300 ${createValidityCSS()} `}
         placeholder={placeholder}
         name={name}
         required
