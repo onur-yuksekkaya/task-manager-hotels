@@ -10,27 +10,27 @@ import { LogoutIcon } from '@heroicons/react/outline';
 
 export default function Sidebar() {
   return (
-    <div className="bg-gradient-to-b from-indigo-700 via-indigo-700 to-indigo-800 basis-1/12 sm:basis-1/5 rounded-t-2xl sm:rounded-lg shadow-md flex justify-center lg:justify-start lg:flex-col items-center py-5 gap-x-10 gap-y-2">
-      <CollectionIcon className="text-white w-12 hidden lg:block" />
+    <div className="bg-white basis-1/12 sm:basis-1/5 rounded-t-2xl sm:rounded-lg shadow-lg flex justify-center lg:justify-start lg:flex-col items-center py-5 gap-x-10 gap-y-2">
+      <CollectionIcon className="text-indigo-500 w-12 hidden lg:block" />
       <HeaderSubtitle
         text={'Otel Görev Takip Sistemi '}
-        color="hidden lg:block sm:text-white display ::after"
+        color="hidden lg:block sm:text-indigo-500"
       />
       <SidebarButton
         buttonText="Görevler"
-        customStyleClass="bg-white hover:bg-indigo-400 text-indigo-700 hover:text-white lg:mt-auto"
+        customStyleClass="bg-indigo-500 hover:bg-indigo-700 text-white lg:mt-auto"
       >
         <BriefcaseIcon className="w-6" />
       </SidebarButton>
       <SidebarButton
         buttonText="Çalışanlar"
-        customStyleClass="bg-white hover:bg-indigo-400 text-indigo-700 hover:text-white"
+        customStyleClass="bg-indigo-500 hover:bg-indigo-700 text-white lg:mb-auto"
       >
         <UsersIcon className="w-6" />
       </SidebarButton>
       <SidebarButton
         buttonText="Çıkış"
-        customStyleClass="bg-white hover:bg-indigo-400 text-indigo-700 hover:text-white lg:mt-auto"
+        customStyleClass="bg-indigo-500 hover:bg-indigo-700 text-white lg:mt-auto"
       >
         <LogoutIcon className="w-6" />
       </SidebarButton>
