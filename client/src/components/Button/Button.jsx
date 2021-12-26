@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Button({
   buttonText = 'button',
-  bgColor = 'bg-blue-500',
+  bgColor = 'bg-white',
   textColor = 'black',
   type = 'button',
 }) {
