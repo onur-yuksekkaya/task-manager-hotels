@@ -5,11 +5,11 @@ import { AuthProvider } from 'context/AuthContext';
 
 function App() {
   return (
-    <div className="App">
-      <AuthProvider>
+    <AuthProvider>
+      <div className="bg-gradient-to-r from-slate-200 to-sky-100 w-screen h-screen">
         <RouterConfig />
-      </AuthProvider>
-    </div>
+      </div>
+    </AuthProvider>
   );
 }
 
