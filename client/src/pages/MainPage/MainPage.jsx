@@ -1,19 +1,21 @@
-import { useAuth } from 'context/AuthContext';
-import LoginPage from 'pages/LoginPage/LoginPage';
 import React from 'react';
+import { useAuth } from 'context/AuthContext';
+
+import Div100vh from 'react-div-100vh';
 import { Outlet } from 'react-router-dom';
 import ContentContainer from './components/ContentContainer';
+import Sidebar from './components/Sidebar';
 
 function MainPage() {
   const { user } = useAuth();
 
   return (
-    <div className="w-screen h-screen bg-red-500">
-      YEah
+    <Div100vh className="w-screen sm:gap-10 flex flex-col-reverse lg:flex-row sm:px-20 sm:py-2 lg:py-10 justify-evenly">
+      <Sidebar />
       <ContentContainer>
         <Outlet />
       </ContentContainer>
-    </div>
+    </Div100vh>
   );
 }
 

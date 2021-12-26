@@ -1,5 +1,5 @@
 import React from 'react';
 
 export default function MainPageInfo() {
-  return <div>MAIN</div>;
+  return <div>Dashboard Content</div>;
 }
