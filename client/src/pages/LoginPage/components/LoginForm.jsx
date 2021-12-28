@@ -1,12 +1,19 @@
 import React from 'react';
-import Button from 'components/Button/Button';
+import Button from 'components/Buttons/Button';
 import TextInput from 'components/TextInput/TextInput';
 import Form from 'components/Form/Form';
 import { loginSchema } from 'config/validationSchemas';
+import { useNavigate } from 'react-router-dom';
+import { CheckIcon } from '@heroicons/react/solid';
 
 export default function LoginForm() {
+  const navigate = useNavigate();
+
   const onSubmit = (data) => {
     console.log(data);
+    setTimeout(() => {
+      navigate('/');
+    }, 2000);
   };
 
   return (
@@ -24,10 +31,10 @@ export default function LoginForm() {
         placeholder="Şifreniz"
       />
       <Button
-        buttonText="Giriş Yap"
-        bgColor="bg-indigo-500"
-        textColor="text-white"
+        text="Giriş Yap"
+        customStyleClass="bg-indigo-600 text-white hover:bg-indigo-800"
         type="submit"
+        icon={<CheckIcon className="w-6" />}
       />
     </Form>
   );
