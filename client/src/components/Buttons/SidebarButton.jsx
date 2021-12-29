@@ -11,7 +11,7 @@ export default function SidebarButton({
   return (
     <button
       type={type}
-      className={`inline-flex w-16 h-14 lg:h-12 lg:w-10/12 text-xs md:text-sm 2xl:text-sm justify-center items-center lg:justify-start lg:gap-5 flex-col lg:flex-row font-light rounded-xl lg:rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 active:translate-y-1 duration-150 ${customStyleClass} `}
+      className={`inline-flex w-16 h-14 lg:h-12 lg:w-10/12 text-xs md:text-sm 2xl:text-sm justify-center items-center lg:justify-start lg:gap-5 flex-col lg:flex-row font-light rounded-xl lg:rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 active:translate-y-1 duration-150 lg:shadow-lg ${customStyleClass} `}
       onClick={onClick}
     >
       {icon}

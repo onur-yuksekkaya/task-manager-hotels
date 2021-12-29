@@ -16,7 +16,7 @@ export default function Sidebar() {
   const navigate = useNavigate();
 
   return (
-    <div className="sticky bottom-0 w-full left-0 lg:static bg-white border border-gray-300 h-14 lg:h-full sm:basis-1/5 2xl:basis-1/6 sm:rounded-2xl shadow-lg flex justify-center lg:justify-start lg:flex-col items-center py-5 gap-x-10 gap-y-2">
+    <div className="sticky bottom-0  min-w-[16rem] max-w-full left-0 lg:static bg-white border border-gray-300 h-14 lg:h-full sm:basis-1/5 2xl:basis-1/6 sm:rounded-2xl shadow-lg flex justify-center lg:justify-start lg:flex-col items-center py-5 gap-x-10 gap-y-2">
       <CollectionIcon className="lg:text-indigo-700 w-12 hidden lg:block" />
       <HeadingSubtitle
         text={'Otel Görev Takip Sistemi '}

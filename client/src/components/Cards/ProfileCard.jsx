@@ -5,7 +5,7 @@ import { UserCircleIcon } from '@heroicons/react/solid';
 export default function ProfileCard({
   name = 'Onur Yuksekkaya',
   email = 'onur@yuksekkaya.com',
-  title = 'Yazilim Adamı',
+  title = 'Yazilim ERKEGI',
 }) {
   return (
     <div className="bg-white flex rounded-xl p-10 h-40 w-full shadow-lg mx-auto border border-gray-300 items-center gap-x-5">
