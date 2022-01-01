@@ -1,15 +1,18 @@
 import React from 'react';
-import Button from 'components/Buttons/Button';
-import TextInput from 'components/TextInput/TextInput';
-import Form from 'components/Form/Form';
-import { loginSchema } from 'config/validationSchemas';
 import { useNavigate } from 'react-router-dom';
+
+import { loginSchema } from 'config/validationSchemas';
+
+import Form from 'components/Form/Form';
+import TextInput from 'components/Form/TextInput';
+import Button from 'components/Buttons/Button';
+
 import { CheckIcon } from '@heroicons/react/solid';
 
 export default function LoginForm() {
   const navigate = useNavigate();
 
-  const onSubmit = (data) => {
+  const handleSubmit = (data) => {
     console.log(data);
     setTimeout(() => {
       navigate('/');
@@ -17,7 +20,7 @@ export default function LoginForm() {
   };
 
   return (
-    <Form onSubmit={onSubmit} schema={loginSchema}>
+    <Form onSubmit={handleSubmit} schema={loginSchema}>
       <TextInput
         name="loginEmail"
         labelText="Email"

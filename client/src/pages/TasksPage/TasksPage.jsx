@@ -1,104 +1,143 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import HeadingSubtitle from 'components/Headings/HeadingSubtitle';
-import SettingSection from 'components/SettingsSection/SettingSection';
-import Table from 'components/Table/Table';
+import Button from 'components/Buttons/Button';
+import Modal from 'components/Modal/Modal';
+import ActiveTable from './components/ActiveTable';
+import HistoryTable from './components/HistoryTable';
+import AddTask from './components/AddTask';
+import ConfirmationWindow from 'components/Modal/ConfirmationWindow';
+import EditTask from './components/EditTask';
 
-import { PlusCircleIcon } from '@heroicons/react/solid';
+import { Tab } from '@headlessui/react';
+import {
+  ClipboardCheckIcon,
+  ClipboardListIcon,
+  PencilIcon,
+  PlusIcon,
+  TrashIcon,
+} from '@heroicons/react/solid';
 
-const tableHeaders = ['ID', 'Görev', 'Yetkili'];
-const headerWidths = [10, 70, 20];
-const tableFieldNames = ['id', 'taskName', 'assigned'];
-
-const dataMock = [
-  {
-    id: 1,
-    taskName: 'Sprain of septal cartilage of nose',
-    assigned: 'Dare Kimberly',
-  },
-  {
-    id: 2,
-    taskName: 'Ornithosis with pneumonia',
-    assigned: 'Verge La Padula',
-  },
-  {
-    id: 3,
-    taskName: 'Corneal staphyloma',
-    assigned: 'Kelsey Waulker',
-  },
-  {
-    id: 4,
-    taskName: 'Rupture of eye with partial loss of intraocular tissue',
-    assigned: 'Rebekah Della Scala',
-  },
-  {
-    id: 5,
-    taskName: 'Blister of trunk, infected',
-    assigned: 'Aurelie Dickerson',
-  },
-  {
-    id: 6,
-    taskName: 'Closed dislocation, multiple cervical vertebrae',
-    assigned: 'Leodora Brittles',
-  },
-  {
-    id: 7,
-    taskName: 'Balanitis xerotica obliterans',
-    assigned: 'Welch Habble',
-  },
-  {
-    id: 8,
-    taskName: 'Psychogenic dysmenorrhea',
-    assigned: 'Richard Shelmardine',
-  },
-  {
-    id: 9,
-    taskName: 'Candidiasis of vulva and vagina',
-    assigned: 'Bridie De Angelo',
-  },
-  {
-    id: 10,
-    taskName:
-      'Squamous cell carcinoma of skin of upper limb, including shoulder',
-    assigned: 'Quint Rumble',
-  },
-  {
-    id: 11,
-    taskName: 'Poisoning by BCG vaccine',
-    assigned: 'Traci Matterson',
-  },
-  {
-    id: 12,
-    taskName: 'Other dural tear',
-    assigned: 'Vaughn Benne',
-  },
-  {
-    id: 13,
-    taskName: 'Assault by shotgun',
-    assigned: 'Ardelis Antushev',
-  },
-  {
-    id: 14,
-    taskName: 'Large cell lymphoma, intrapelvic lymph nodes',
-    assigned: 'Alessandra Oldfield-Cherry',
-  },
-  {
-    id: 15,
-    taskName:
-      'Toxic nodular goiter, unspecified type, without mention of thyrotoxic crisis or storm',
-    assigned: 'Reg Giacoppo',
-  },
-];
+import { defaultValuesMock } from './PlaceholderData';
 
 export default function TasksPage() {
+  const [selectedActiveItem, setSelectedActiveItem] = useState();
+  const [selectedHistoryItem, setSelectedHistoryItem] = useState();
+  const [isAddModalOpen, showAddModal] = useState(false);
+  const [isDeleteModalOpen, showDeleteModal] = useState(false);
+  const [isEditModalOpen, showEditModal] = useState(false);
+
+  const activeTableActions = [
+    {
+      name: 'add',
+      action: () => showAddModal(true),
+      icon: <PlusIcon className="w-9/12 h-9/12" />,
+      showOnlySelect: false,
+    },
+    {
+      name: 'edit',
+      action: () => showEditModal(true),
+      icon: <PencilIcon className="w-9/12 h-9/12" />,
+      showOnlySelect: true,
+    },
+    {
+      name: 'delete',
+      action: () => showDeleteModal(true),
+      icon: <TrashIcon className="w-9/12 h-9/12" />,
+      showOnlySelect: true,
+    },
+  ];
+  const historyTableActions = [
+    {
+      name: 'edit',
+      action: () => showEditModal(true),
+      icon: <PencilIcon className="w-9/12 h-9/12" />,
+      showOnlySelect: true,
+    },
+    {
+      name: 'delete',
+      action: () => showDeleteModal(true),
+      icon: <TrashIcon className="w-9/12 h-9/12" />,
+      showOnlySelect: true,
+    },
+  ];
+
+  const deleteModalActions = {
+    confirm: () => {
+      showDeleteModal(false);
+      console.log('Sildim');
+    },
+    cancel: () => {
+      showDeleteModal(false);
+      console.log('Silmedim');
+    },
+  };
+
   return (
     <>
-      <Table
-        tableHeaders={tableHeaders}
-        tableFieldNames={tableFieldNames}
-        tableItems={dataMock}
-        headerWidths={headerWidths}
-      />
+      <Tab.Group
+        onChange={() => {
+          setSelectedActiveItem('');
+          setSelectedHistoryItem('');
+        }}
+      >
+        <Tab.List className="flex gap-x-2 justify-center">
+          <Tab className="basis-1/2 md:basis-2/12 lg:basis-48 2xl:basis-68 focus:outline-none">
+            {/* //BUTON DUZELT BUTON ICINDE BUTON */}
+            <Button
+              text="Aktif Görevler"
+              customStyleClass="my-2 text-indigo-500 hover:bg-indigo-600 hover:text-white"
+              icon={<ClipboardListIcon className="w-6" />}
+            />
+          </Tab>
+          <Tab className="basis-1/2 md:basis-2/12 lg:basis-48 2xl:basis-68 focus:outline-none">
+            <Button
+              text="Tamamlanmış Görevler"
+              customStyleClass="my-2 text-indigo-500 hover:bg-indigo-600 hover:text-white"
+              icon={<ClipboardCheckIcon className="w-6" />}
+            />
+          </Tab>
+        </Tab.List>
+        <Tab.Panels>
+          <Tab.Panel className="focus:outline-none">
+            <ActiveTable
+              setSelectedActiveItem={setSelectedActiveItem}
+              selectedActiveItem={selectedActiveItem}
+              activeTableActions={activeTableActions}
+            />
+          </Tab.Panel>
+          <Tab.Panel className="focus:outline-none">
+            <HistoryTable
+              setSelectedHistoryItem={setSelectedHistoryItem}
+              selectedHistoryItem={selectedHistoryItem}
+              historyTableActions={historyTableActions}
+            />
+          </Tab.Panel>
+        </Tab.Panels>
+      </Tab.Group>
+      <Modal
+        setIsOpen={showAddModal}
+        isOpen={isAddModalOpen}
+        title="Bir Görev Ekleyin"
+      >
+        <AddTask setIsOpen={showAddModal} />
+      </Modal>
+      <Modal
+        setIsOpen={showDeleteModal}
+        isOpen={isDeleteModalOpen}
+        title="Görevi Sil"
+      >
+        <ConfirmationWindow
+          question="Sil lan bunu"
+          windowActions={deleteModalActions}
+        />
+      </Modal>
+      <Modal
+        setIsOpen={showEditModal}
+        isOpen={isEditModalOpen}
+        title="Görevi Düzenle"
+      >
+        <EditTask taskValues={defaultValuesMock} setIsOpen={showEditModal} />
+      </Modal>
     </>
   );
 }
