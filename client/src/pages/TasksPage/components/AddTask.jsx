@@ -49,7 +49,7 @@ export default function AddTask({ setIsOpen }) {
 
       <Button
         text="Oluştur"
-        customStyleClass="bg-indigo-600 text-white hover:bg-indigo-800"
+        customStyleClass="bg-green-600 text-white hover:bg-green-800"
         type="submit"
         icon={<CheckIcon className="w-6" />}
       />

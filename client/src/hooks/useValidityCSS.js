@@ -15,7 +15,7 @@ const useValidityCSS = (isFieldDirty, isError) => {
 
   useEffect(() => {
     createValidityCSS();
-  }, [isError, isFieldDirty]);
+  }, [isError]);
 
   return validityCSS;
 };
