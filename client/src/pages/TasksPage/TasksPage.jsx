@@ -83,26 +83,26 @@ export default function TasksPage() {
         }}
       >
         <Tab.List className="flex gap-x-2 justify-center">
-          <Tab className="basis-1/2 md:basis-2/12 lg:basis-48 2xl:basis-68 focus:outline-none">
+          <Tab className="basis-1/2 md:basis-2/12 lg:basis-48 2xl:basis-68 focus:outline-none active:translate-y-1">
             {/* //BUTON DUZELT BUTON ICINDE BUTON */}
             <Button
               text="Aktif Görevler"
               customStyleClass="my-2 text-indigo-500 hover:bg-indigo-600 hover:text-white"
               icon={<ClipboardListIcon className="w-6" />}
               style={{
-                backgroundColor: selectedTabIndex ? '#4f46e5' : 'white',
-                color: selectedTabIndex ? 'white' : '#6366f1',
+                backgroundColor: !selectedTabIndex ? '#4f46e5' : 'white',
+                color: !selectedTabIndex ? 'white' : '#6366f1',
               }}
             />
           </Tab>
-          <Tab className="basis-1/2 md:basis-2/12 lg:basis-48 2xl:basis-68 focus:outline-none">
+          <Tab className="basis-1/2 md:basis-2/12 lg:basis-48 2xl:basis-68 focus:outline-none active:translate-y-1">
             <Button
               text="Tamamlanmış Görevler"
               customStyleClass="my-2 text-indigo-500 hover:bg-indigo-600 hover:text-white"
               icon={<ClipboardCheckIcon className="w-6" />}
               style={{
-                backgroundColor: !selectedTabIndex ? '#4f46e5' : 'white',
-                color: !selectedTabIndex ? 'white' : '#6366f1',
+                backgroundColor: selectedTabIndex ? '#4f46e5' : 'white',
+                color: selectedTabIndex ? 'white' : '#6366f1',
               }}
             />
           </Tab>
