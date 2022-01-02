@@ -1,0 +1,36 @@
+{
+  "name": "node-management-api",
+  "version": "0.1.0",
+  "description": "Management API with Node",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/movwf/node-management-api.git"
+  },
+  "keywords": [
+    "api",
+    "node",
+    "express",
+    "sequelize"
+  ],
+  "author": "Movwf (movwf@github)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/movwf/node-management-api/issues"
+  },
+  "homepage": "https://github.com/movwf/node-management-api#readme",
+  "dependencies": {
+    "express": "^4.17.2",
+    "pg": "^8.7.1",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^7.0.0-alpha.3"
+  },
+  "devDependencies": {
+    "dotenv-safe": "^8.2.0",
+    "nodemon": "^2.0.15",
+    "sucrase": "^3.20.3"
+  }
+}
