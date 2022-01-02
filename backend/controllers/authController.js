@@ -15,6 +15,8 @@ export const login_user = async (req, res) => {
       result: "OK",
       sessionId: "123-456-ABC",
       name: loggedUser[0].name + " " + loggedUser[0].surname,
+      department: loggedUser[0].department,
+      isAdmin: loggedUser[0].isAdmin,
     });
   } else
     res.send({ result: "Error", message: "general_user_notFound_message" });

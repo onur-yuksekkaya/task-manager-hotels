@@ -60,12 +60,11 @@ export const get_task_history = async (req, res) => {
 };
 
 export const create_task = async (req, res) => {
-  const { title, description, deadline, room_number, assigned } = req.body;
+  const { title, description, room_number, assigned } = req.body;
 
   await db.task.create({
     title,
     description,
-    deadline,
     room_number,
     assigned: assigned || [],
   });
@@ -87,12 +86,8 @@ export const get_task_by_id = async (req, res) => {
 export const update_task_detail = async (req, res) => {
   const { assigned } = req.body;
 
-  await db.task.update(
-    {
-      assigned: assigned || [],
-    },
-    { where: { id: req.params.id } }
-  );
+  const assignedObj = assigned ? { assigned } : {};
+  await db.task.update(assignedObj, { where: { id: req.params.id } });
 
   res.send({ result: "OK" });
 };

@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/movwf/node-management-api#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.2",
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
