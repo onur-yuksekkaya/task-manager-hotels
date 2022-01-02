@@ -14,10 +14,6 @@ const Task = (sequelize) =>
     description: {
       type: DataTypes.STRING,
     },
-    deadline: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
     room_number: {
       type: DataTypes.INTEGER,
       allowNull: false,

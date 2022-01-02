@@ -1,11 +1,13 @@
 require("dotenv-safe").config();
 import express from "express";
 import routes from "./routes";
+import cors from "cors";
 import db from "./configs/db";
 
 const app = express();
 db.sync();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
