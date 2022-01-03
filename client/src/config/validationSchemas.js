@@ -1,11 +1,11 @@
 import * as yup from 'yup';
 
 export const loginSchema = yup.object({
-  loginEmail: yup
+  email: yup
     .string()
     .email('Lutfen gecerli bir email girin')
     .required('Bu alan gereklidir.'),
-  loginPassword: yup
+  password: yup
     .string()
     .min(5, 'Parola en az 5 karakter')
     .max(10, 'Parola en fazla 10 karakter')
@@ -40,36 +40,29 @@ export const editTaskSchema = yup.object({
   taskWorker: yup.string().required('Bir çalışan seçin.'),
 });
 
-export const addUserSchema = yup.object({
-  workerName: yup
+export const registerUserSchema = yup.object({
+  name: yup
     .string()
     .min(2, 'Çalışan adı 2 karakterden az olamaz')
     .max(30, 'Çalışan adı 30 karakterden fazla olamaz')
     .required('Çalışan adı boş olamaz.'),
+  surname: yup
+    .string()
+    .min(2, 'Çalışan Soyadı 2 karakterden az olamaz')
+    .max(30, 'Çalışan Soyadı 30 karakterden fazla olamaz')
+    .required('Çalışan Soyadı boş olamaz.'),
+  department: yup
+    .string()
+    .min(3, 'Departman 3 karakterden az olamaz')
+    .max(30, 'Departman 30 karakterden fazla olamaz')
+    .required('Departman boş olamaz.'),
   email: yup
     .string()
     .email('Lutfen gecerli bir email girin')
-    .required('Bu alan gereklidir.'),
-  workerTitle: yup
+    .required('Email boş olamaz'),
+  phone: yup
     .string()
-    .min(2, 'Çalışan ünvanı 5 karakterden az olamaz')
-    .max(30, 'Çalışan ünvanı 30 karakterden fazla olamaz')
-    .required('Çalışan ünvanı boş olamaz.'),
-});
-
-export const editUserSchema = yup.object({
-  workerName: yup
-    .string()
-    .min(2, 'Çalışan adı 2 karakterden az olamaz')
-    .max(30, 'Çalışan adı 30 karakterden fazla olamaz')
-    .required('Çalışan adı boş olamaz.'),
-  email: yup
-    .string()
-    .email('Lutfen gecerli bir email girin')
-    .required('Bu alan gereklidir.'),
-  workerTitle: yup
-    .string()
-    .min(2, 'Çalışan ünvanı 5 karakterden az olamaz')
-    .max(30, 'Çalışan ünvanı 30 karakterden fazla olamaz')
-    .required('Çalışan ünvanı boş olamaz.'),
+    .min(10, 'Telefon en az 10-11 karakter olmalıdır')
+    .max(11, 'Telefon en az 10-11 karakter olmalıdır')
+    .required('Telefon boş olamaz gereklidir.'),
 });

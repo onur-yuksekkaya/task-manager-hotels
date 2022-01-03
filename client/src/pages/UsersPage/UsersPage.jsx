@@ -1,29 +1,99 @@
-import React, { useState } from 'react';
-import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/solid';
+import React, { useEffect, useState } from 'react';
+
+import EmployeeApi, {
+  deleteEmployee,
+  getEmployeeData,
+} from 'api/services/employee';
+import { tableHeaders, headerWidths } from './userTableConfig';
 
 import Table from 'components/Table/Table';
 import Modal from 'components/Modal/Modal';
-import ConfirmationWindow from 'components/Modal/ConfirmationWindow';
+
 import AddUser from './components/AddUser';
 import EditUser from './components/EditUser';
+import Loading from 'components/Loading/Loading';
+import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/solid';
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
 
-import {
-  dataMock,
-  tableHeaders,
-  headerWidths,
-  defaultValuesMock,
-} from './PlaceholderData';
-import InfoWindow from 'components/Modal/InfoWindow';
+const rowCount = 10;
 
 export default function UsersPage() {
   const [selectedUser, setSelectedUser] = useState();
   const [isAddModalOpen, showAddModal] = useState(false);
-  const [isDeleteModalOpen, showDeleteModal] = useState(false);
   const [isEditModalOpen, showEditModal] = useState(false);
-  const [isCompletedModalOpen, showCompletedModal] = useState(false);
-  const [completedModalInfo, setCompletedModalInfo] = useState(
-    'YOOO MR WHITE WASSUP'
-  );
+  const [userList, setUserList] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+  const [tableHasNextPage, setTableHasNextPage] = useState(false);
+  const [page, setPage] = useState(1);
+  const [selectedUserValues, setSelectedUserValues] = useState(undefined);
+
+  const UserSwal = withReactContent(Swal);
+
+  const loadUserList = async (pageNumber = 1) => {
+    setLoading(true);
+    const { employeeList, hasNextPage } = await EmployeeApi.getAllEmployees({
+      page: pageNumber,
+      rowCount,
+    });
+    setTableHasNextPage(hasNextPage);
+    setUserList(employeeList);
+    setLoading(false);
+  };
+
+  const loadSelectedUserValues = async (id) => {
+    setLoading(true);
+    const { employee } = await getEmployeeData({ id });
+    setSelectedUserValues(employee);
+    console.log(employee);
+    setLoading(false);
+    showEditModal(true);
+  };
+
+  const deleteSelectedUser = async (id) => {
+    await deleteEmployee(id);
+    setSelectedUserValues('');
+    setSelectedUser('');
+    loadUserList(page);
+  };
+
+  useEffect(() => {
+    loadUserList(page);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
+
+  const deleteConfirmAlert = () => {
+    UserSwal.fire({
+      title: <strong className="text-indigo-800">Çalışan Sil</strong>,
+      html: <i className="text-indigo-600">Çalışan silinsin mi?</i>,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sil',
+      confirmButtonColor: '#4f46e5',
+      cancelButtonColor: '#be123c',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await deleteSelectedUser({ id: selectedUser });
+        deleteSuccessAlert();
+      }
+    });
+  };
+
+  const deleteSuccessAlert = () => {
+    UserSwal.fire({
+      title: <strong>Çalışan Silindi!</strong>,
+      icon: 'success',
+      showConfirmButton: false,
+      didOpen: () => {
+        setTimeout(() => {
+          UserSwal.close();
+        }, 1400);
+      },
+    });
+  };
+
+  const goToNextPage = () => setPage(page + 1);
+  const goToPrevPage = () => setPage(page - 1);
 
   const userTableActions = [
     {
@@ -34,74 +104,63 @@ export default function UsersPage() {
     },
     {
       name: 'edit',
-      action: () => showEditModal(true),
+      action: () => loadSelectedUserValues(selectedUser),
       icon: <PencilIcon className="w-9/12 h-9/12" />,
       showOnlySelect: true,
     },
     {
       name: 'delete',
-      action: () => showDeleteModal(true),
+      action: () => {
+        deleteConfirmAlert();
+      },
       icon: <TrashIcon className="w-9/12 h-9/12" />,
       showOnlySelect: true,
     },
   ];
 
-  const deleteModalActions = {
-    confirm: () => {
-      showDeleteModal(false);
-      showCompletedModal(true);
-      console.log('Sildim');
-    },
-    cancel: () => {
-      showDeleteModal(false);
-      console.log('Silmedim');
-    },
-  };
-
   return (
     <>
-      <Table
-        tableActions={userTableActions}
-        tableHeaders={tableHeaders}
-        tableItems={dataMock}
-        headerWidths={headerWidths}
-        selectedItem={selectedUser}
-        setSelectedItem={setSelectedUser}
-      />
+      {isLoading ? (
+        <div className="w-full h-full flex">
+          <Loading color="text-indigo-600 m-auto w-12 h-12" />
+        </div>
+      ) : (
+        <Table
+          tableActions={userTableActions}
+          tableHeaders={tableHeaders}
+          tableItems={userList}
+          headerWidths={headerWidths}
+          hasNextPage={tableHasNextPage}
+          selectedItem={selectedUser}
+          setSelectedItem={setSelectedUser}
+          pageChangers={{ goToNextPage, goToPrevPage }}
+          page={page}
+          loadTable={loadUserList}
+        />
+      )}
       <Modal
         setIsOpen={showAddModal}
         isOpen={isAddModalOpen}
         title="Bir Çalışan Oluşturun"
       >
-        <AddUser setIsOpen={showAddModal} />
+        <AddUser setIsOpen={showAddModal} loadUserData={loadUserList} />
       </Modal>
-      <Modal
-        setIsOpen={showDeleteModal}
-        isOpen={isDeleteModalOpen}
-        title="Çalışanı Sil"
-      >
-        <ConfirmationWindow
-          question="Sil lan bunu"
-          windowActions={deleteModalActions}
-        />
-      </Modal>
+
       <Modal
         setIsOpen={showEditModal}
         isOpen={isEditModalOpen}
         title="Çalışan Bilgilerini Düzenleyin"
+        onClose={() => {
+          setSelectedUser('');
+          setSelectedUserValues('');
+          showEditModal(false);
+        }}
       >
-        <EditUser taskValues={defaultValuesMock} setIsOpen={showEditModal} />
-      </Modal>
-      <Modal
-        setIsOpen={showCompletedModal}
-        isOpen={isCompletedModalOpen}
-        title="Tamamlandi!"
-      >
-        <InfoWindow
-          info={completedModalInfo}
-          closeWindowAction={() => {
-            showCompletedModal(false);
-          }}
+        <EditUser
+          selectedUser={selectedUser}
+          setIsOpen={showEditModal}
+          userValues={selectedUserValues}
+          loadUserData={loadUserList}
         />
       </Modal>
     </>

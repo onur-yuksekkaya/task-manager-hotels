@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext } from 'react';
+import useLocalStorage from 'hooks/useLocalStorage';
 
 const AuthContext = createContext('');
 
@@ -7,10 +8,9 @@ function useAuth() {
 }
 
 function AuthProvider({ children }) {
-  const [user, setUser] = useState('onur');
+  const [user, setUser] = useLocalStorage('hotelApiUser', '');
 
-  const value = { user };
-
+  const value = { user, setUser };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 

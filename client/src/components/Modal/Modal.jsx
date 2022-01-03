@@ -6,6 +6,7 @@ export default function Modal({
   isOpen,
   setIsOpen,
   title = 'Modal Here',
+  ...rest
 }) {
   function closeModal() {
     setIsOpen(false);
@@ -16,6 +17,7 @@ export default function Modal({
       open={isOpen}
       onClose={closeModal}
       className="fixed top-0 left-0 flex items-center justify-center h-screen w-screen"
+      {...rest}
     >
       <Dialog.Overlay className="fixed inset-0 bg-black opacity-50" />
       <div className="relative bg-white border border-gray-300 shadow-lg rounded mx-auto p-8 max-w-[90%]">
