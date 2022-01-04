@@ -34,7 +34,6 @@ export const get_all_employees_PRM = async (req, res) => {
       name: e.name,
       surname: e.surname,
     })),
-    hasNextPage: page * rowCount < employeeCount,
   });
 };
 
