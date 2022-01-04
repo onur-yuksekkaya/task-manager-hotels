@@ -2,14 +2,14 @@ import db from "../configs/db";
 
 export const login_user = async (req, res) => {
   const { email, password } = req.body;
-  const loggedUser = await db.user.findAll({
+  const loggedUser = await db.user.findOne({
     where: {
       email,
       password,
     },
   });
 
-  if (loggedUser.length) {
+  if (loggedUser) {
     res.statusCode = 200;
     res.send({
       result: "OK",
@@ -18,8 +18,7 @@ export const login_user = async (req, res) => {
       department: loggedUser[0].department,
       isAdmin: loggedUser[0].isAdmin,
     });
-  } else
-    res.send({ result: "Error", message: "general_user_notFound_message" });
+  } else res.send({ result: "Error", message: "User not found!" });
 };
 
 export const register_user = async (req, res) => {
