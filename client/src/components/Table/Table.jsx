@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import useTableHeaderWidth from 'hooks/useTableHeaderWidth';
 
 import TableBody from './TableBody';
 import TableButton from './TableButton';
 import TableHeader from './TableHeader';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
+import TableActionRow from './TableActionRow';
 
 export default function Table({
   tableActions,
@@ -17,19 +18,18 @@ export default function Table({
   pageChangers,
   selectedItem,
   setSelectedItem,
+  isAdminViewing,
 }) {
   const [widths, unit] = useTableHeaderWidth(tableHeaders, headerWidths);
 
   return (
     //CONTEXT YAPILABILIR PROP GOMMEK YERINE
     <div className="flex flex-col w-full lg:w-[98%] gap-y-2">
-      <div className="flex gap-x-2 justify-center lg:justify-end h-10">
-        {tableActions.map((item, index) =>
-          selectedItem || !item.showOnlySelect ? (
-            <TableButton key={index} icon={item.icon} onClick={item.action} />
-          ) : null
-        )}
-      </div>
+      <TableActionRow
+        tableActions={tableActions}
+        isAdminViewing={isAdminViewing}
+        selectedItem={selectedItem}
+      />
       <TableHeader
         tableHeaders={tableHeaders}
         headerWidths={widths}

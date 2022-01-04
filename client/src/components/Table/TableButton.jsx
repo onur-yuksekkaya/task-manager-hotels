@@ -10,10 +10,12 @@ export default function TableButton({
   return (
     <button
       onClick={onClick}
-      className="bg-white w-10 h-10 rounded-md shadow-lg text-indigo-700 flex justify-center items-center hover:text-white hover:bg-indigo-700 active:translate-y-1"
+      className="group bg-white w-10 h-10 rounded-md shadow-lg text-indigo-700 flex justify-center items-center hover:text-white hover:bg-indigo-700 active:translate-y-1 hover:w-28 duration-150"
     >
       {icon}
-      {text}
+      <span className="hidden group-hover:inline-block text-sm mx-2">
+        {text}
+      </span>
     </button>
   );
 }

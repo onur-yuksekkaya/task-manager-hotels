@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import { useAuth } from 'context/AuthContext';
 
 import EmployeeApi, {
   deleteEmployee,
@@ -8,17 +11,17 @@ import { tableHeaders, headerWidths } from './userTableConfig';
 
 import Table from 'components/Table/Table';
 import Modal from 'components/Modal/Modal';
-
 import AddUser from './components/AddUser';
 import EditUser from './components/EditUser';
 import Loading from 'components/Loading/Loading';
+
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/solid';
-import withReactContent from 'sweetalert2-react-content';
-import Swal from 'sweetalert2';
 
 const rowCount = 10;
 
 export default function UsersPage() {
+  const { user } = useAuth();
+
   const [selectedUser, setSelectedUser] = useState();
   const [isAddModalOpen, showAddModal] = useState(false);
   const [isEditModalOpen, showEditModal] = useState(false);
@@ -98,23 +101,29 @@ export default function UsersPage() {
   const userTableActions = [
     {
       name: 'add',
+      text: 'Ekle',
       action: () => showAddModal(true),
-      icon: <PlusIcon className="w-9/12 h-9/12" />,
+      icon: <PlusIcon className="w-6 h-6" />,
       showOnlySelect: false,
+      isAdminControlled: true,
     },
     {
       name: 'edit',
+      text: 'Düzenle',
       action: () => loadSelectedUserValues(selectedUser),
-      icon: <PencilIcon className="w-9/12 h-9/12" />,
+      icon: <PencilIcon className="w-6 h-6" />,
       showOnlySelect: true,
+      isAdminControlled: true,
     },
     {
       name: 'delete',
+      text: 'Sil',
       action: () => {
         deleteConfirmAlert();
       },
-      icon: <TrashIcon className="w-9/12 h-9/12" />,
+      icon: <TrashIcon className="w-6 h-6" />,
       showOnlySelect: true,
+      isAdminControlled: true,
     },
   ];
 
@@ -136,6 +145,7 @@ export default function UsersPage() {
           pageChangers={{ goToNextPage, goToPrevPage }}
           page={page}
           loadTable={loadUserList}
+          isAdminViewing={user.isAdmin}
         />
       )}
       <Modal
