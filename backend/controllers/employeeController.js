@@ -36,13 +36,13 @@ export const create_employee = async (req, res) => {
 };
 
 export const get_employee_by_id = async (req, res) => {
-  const selectedEmployee = await db.user.findAll({
+  const selectedEmployee = await db.user.findOne({
     where: {
       id: req.params.id,
     },
   });
 
-  const employeeData = selectedEmployee.length
+  const employeeData = selectedEmployee
     ? { employee: sanitizeEmployee(selectedEmployee) }
     : {};
 
