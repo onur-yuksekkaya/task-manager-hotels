@@ -17,6 +17,20 @@ export const getAllEmployees = async ({ page, rowCount }) => {
   }
 };
 
+export const employeePRM = async () => {
+  try {
+    const { data } = await Api.get("employee/prm");
+
+    if (data.result === "OK") {
+      return {
+        employeeList: data.employeeList,
+      };
+    }
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 export const getEmployeeData = async ({ id }) => {
   try {
     const { data } = await Api.get(`employee/${id}`);
