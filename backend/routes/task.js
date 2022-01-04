@@ -4,6 +4,7 @@ import {
   delete_task,
   get_active_tasks,
   get_all_tasks,
+  get_employee_tasks,
   get_task_by_id,
   get_task_history,
   update_task_detail,
@@ -16,6 +17,7 @@ const router = express.Router();
   - /tasks <GET> - Get All Tasks
   - /tasks/active <GET> - Get Active Tasks
   - /tasks/history <GET> - Get Passive Tasks
+  - /tasks/employee <GET> - Get Tasks for Employee
   - /tasks/create <POST> - Create Task
   - /tasks/:id <GET> - Get Task Data
   - /tasks/:id <PATCH> - Set Task to Employee/s
@@ -25,6 +27,7 @@ const router = express.Router();
 router.get("/", get_all_tasks);
 router.get("/active", get_active_tasks);
 router.get("/history", get_task_history);
+router.get("/employee", get_employee_tasks);
 router.post("/create", create_task);
 router.get("/:id", get_task_by_id);
 router.patch("/:id", update_task_detail);

@@ -1,7 +1,7 @@
 import db from "../configs/db";
 
 export const get_all_tasks = async (req, res) => {
-  const { page, rowCount } = req.params;
+  const { page, rowCount } = req.query;
 
   const taskCount = await db.task.count();
   const allTasks = await db.task.findAll({
@@ -17,7 +17,7 @@ export const get_all_tasks = async (req, res) => {
 };
 
 export const get_active_tasks = async (req, res) => {
-  const { page, rowCount } = req.params;
+  const { page, rowCount } = req.query;
 
   const taskCount = await db.task.count();
   const allTasks = await db.task.findAll({
@@ -38,13 +38,34 @@ export const get_active_tasks = async (req, res) => {
 };
 
 export const get_task_history = async (req, res) => {
-  const { page, rowCount } = req.params;
+  const { page, rowCount } = req.query;
 
   const taskCount = await db.task.count();
   const allTasks = await db.task.findAll({
     where: {
       status: {
         [db.Sequelize.Op.eq]: "done",
+      },
+    },
+    limit: rowCount || 10,
+    offset: page * rowCount - rowCount || 0,
+  });
+
+  res.send({
+    result: "OK",
+    taskList: allTasks,
+    hasNextPage: page * rowCount < taskCount,
+  });
+};
+
+export const get_employee_tasks = async (req, res) => {
+  const { page, rowCount, employeeId } = req.query;
+
+  const taskCount = await db.task.count();
+  const allTasks = await db.task.findAll({
+    where: {
+      assigned: {
+        [db.Sequelize.Op.contains]: [employeeId],
       },
     },
     limit: rowCount || 10,
