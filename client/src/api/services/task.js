@@ -49,6 +49,23 @@ const getHistoryTasks = async ({ page, rowCount }) => {
   }
 };
 
+const getEmployeeTasks = async ({ page, rowCount, employeeId }) => {
+  try {
+    const { data } = await Api.get(
+      `/tasks/history?page=${page}&rowCount=${rowCount}&employeeId=${employeeId}`
+    );
+
+    if (data.result === "OK") {
+      return {
+        taskList: data.taskList,
+        hasNextPage: data.hasNextPage,
+      };
+    }
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 const createTask = async ({ title, description, room_number, assigned }) => {
   try {
     const { data } = await Api.post("/tasks/create", {
@@ -112,6 +129,7 @@ const TaskApi = {
   getAllTasks,
   getActiveTasks,
   getHistoryTasks,
+  getEmployeeTasks,
   createTask,
   getTaskById,
   updateTask,
