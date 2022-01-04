@@ -1,4 +1,5 @@
 import db from "../configs/db";
+import { sanitizeTask } from "./utils";
 
 export const get_all_tasks = async (req, res) => {
   const { page, rowCount } = req.query;
@@ -11,7 +12,7 @@ export const get_all_tasks = async (req, res) => {
 
   res.send({
     result: "OK",
-    taskList: allTasks,
+    taskList: allTasks.map(sanitizeTask),
     hasNextPage: page * rowCount < taskCount,
   });
 };
@@ -32,7 +33,7 @@ export const get_active_tasks = async (req, res) => {
 
   res.send({
     result: "OK",
-    taskList: allTasks,
+    taskList: allTasks.map(sanitizeTask),
     hasNextPage: page * rowCount < taskCount,
   });
 };
@@ -53,7 +54,7 @@ export const get_task_history = async (req, res) => {
 
   res.send({
     result: "OK",
-    taskList: allTasks,
+    taskList: allTasks.map(sanitizeTask),
     hasNextPage: page * rowCount < taskCount,
   });
 };
@@ -74,7 +75,7 @@ export const get_employee_tasks = async (req, res) => {
 
   res.send({
     result: "OK",
-    taskList: allTasks,
+    taskList: allTasks.map(sanitizeTask),
     hasNextPage: page * rowCount < taskCount,
   });
 };
