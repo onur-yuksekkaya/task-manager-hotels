@@ -73,7 +73,7 @@ export default function UsersPage() {
       cancelButtonColor: '#be123c',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await deleteSelectedUser({ id: selectedUser });
+        deleteSelectedUser({ id: selectedUser });
         deleteSuccessAlert();
       }
     });
