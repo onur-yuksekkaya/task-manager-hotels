@@ -2,7 +2,7 @@ import db from "../configs/db";
 import { getPatchableProps, sanitizeEmployee } from "./utils";
 
 export const get_all_employees = async (req, res) => {
-  const { page, rowCount } = req.body;
+  const { page, rowCount } = req.params;
 
   const employeeCount = await db.user.count();
   const allEmployees = await db.user.findAll({
