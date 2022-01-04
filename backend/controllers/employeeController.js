@@ -20,6 +20,24 @@ export const get_all_employees = async (req, res) => {
   });
 };
 
+export const get_all_employees_PRM = async (req, res) => {
+  const allEmployees = await db.user.findAll({
+    where: {
+      isAdmin: false,
+    },
+  });
+
+  res.send({
+    result: "OK",
+    employeeList: allEmployees.map((e) => ({
+      id: e.id,
+      name: e.name,
+      surname: e.surname,
+    })),
+    hasNextPage: page * rowCount < employeeCount,
+  });
+};
+
 export const create_employee = async (req, res) => {
   const { name, surname, email, department, phone, password } = req.body;
 
