@@ -2,7 +2,9 @@ import Api from "../api";
 
 export const getAllEmployees = async ({ page, rowCount }) => {
   try {
-    const { data } = await Api.get("employee", { page, rowCount });
+    const { data } = await Api.get(
+      `employee?page=${page}&rowCount=${rowCount}`
+    );
 
     if (data.result === "OK") {
       return {
