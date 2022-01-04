@@ -7,6 +7,14 @@ export const sanitizeEmployee = (selectedEmployee) => ({
   phone: selectedEmployee.phone,
 });
 
+export const sanitizeTask = (selectedTask) => ({
+  id: selectedTask.id,
+  title: selectedTask.title,
+  description: selectedTask.description,
+  room_number: selectedTask.room_number,
+  assigned: selectedTask.assigned,
+});
+
 export const getPatchableProps = (reqObject) => {
   const result = {};
 
