@@ -7,7 +7,6 @@ import TextInput from 'components/Form/TextInput';
 import Button from 'components/Buttons/Button';
 
 import { CheckIcon } from '@heroicons/react/solid';
-import Loading from 'components/Loading/Loading';
 
 export default function LoginForm({ handleSubmit, isLoading }) {
   return (
@@ -25,10 +24,11 @@ export default function LoginForm({ handleSubmit, isLoading }) {
         placeholder="Şifreniz"
       />
       <Button
-        text={isLoading ? '' : 'Giriş Yap'}
+        isLoading={isLoading}
+        text="Giriş Yap"
         customStyleClass="bg-indigo-600 text-white hover:bg-indigo-800"
         type="submit"
-        icon={isLoading ? <Loading /> : <CheckIcon className="w-6" />}
+        icon={<CheckIcon className="w-6" />}
       />
     </Form>
   );

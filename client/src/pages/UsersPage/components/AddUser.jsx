@@ -98,10 +98,11 @@ export default function AddUser({ setIsOpen, loadUserData }) {
         placeholder="Sifre"
       />
       <Button
-        text={isLoading ? <Loading /> : 'Oluştur'}
+        isLoading={isLoading}
+        text={'Oluştur'}
         customStyleClass="bg-green-600 text-white hover:bg-green-800"
         type="submit"
-        icon={isLoading ? null : <CheckIcon className="w-6" />}
+        icon={<CheckIcon className="w-6" />}
       />
     </Form>
   );
