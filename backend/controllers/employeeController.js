@@ -1,8 +1,8 @@
-import db from "../configs/db";
-import { getPatchableProps, sanitizeEmployee } from "./utils";
+import db from '../configs/db';
+import { getPatchableProps, sanitizeEmployee } from './utils';
 
 export const get_all_employees = async (req, res) => {
-  const { page, rowCount } = req.params;
+  const { page, rowCount } = req.query;
 
   const employeeCount = await db.user.count();
   const allEmployees = await db.user.findAll({
@@ -14,7 +14,7 @@ export const get_all_employees = async (req, res) => {
   });
 
   res.send({
-    result: "OK",
+    result: 'OK',
     employeeList: allEmployees.map(sanitizeEmployee),
     hasNextPage: page * rowCount < employeeCount,
   });
@@ -28,7 +28,7 @@ export const get_all_employees_PRM = async (req, res) => {
   });
 
   res.send({
-    result: "OK",
+    result: 'OK',
     employeeList: allEmployees.map((e) => ({
       id: e.id,
       name: e.name,
@@ -49,7 +49,7 @@ export const create_employee = async (req, res) => {
     password,
   });
 
-  res.send({ result: "OK", createdAt: registeredEmployee.createdAt });
+  res.send({ result: 'OK', createdAt: registeredEmployee.createdAt });
 };
 
 export const get_employee_by_id = async (req, res) => {
@@ -63,7 +63,7 @@ export const get_employee_by_id = async (req, res) => {
     ? { employee: sanitizeEmployee(selectedEmployee) }
     : {};
 
-  res.send(Object.assign({ result: "OK" }, employeeData));
+  res.send(Object.assign({ result: 'OK' }, employeeData));
 };
 
 export const update_employee = async (req, res) => {
@@ -71,7 +71,7 @@ export const update_employee = async (req, res) => {
     where: { id: req.params.id },
   });
 
-  res.send({ result: "OK" });
+  res.send({ result: 'OK' });
 };
 
 export const delete_employee = async (req, res) => {
@@ -82,10 +82,10 @@ export const delete_employee = async (req, res) => {
   });
 
   if (result === 1)
-    res.send({ result: "OK", message: "general_employee_deleted_text" });
+    res.send({ result: 'OK', message: 'general_employee_deleted_text' });
   if (result === 0)
     res.send({
-      result: "OK",
-      message: "general_employee_already_deleted_text",
+      result: 'OK',
+      message: 'general_employee_already_deleted_text',
     });
 };
