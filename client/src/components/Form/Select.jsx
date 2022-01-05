@@ -7,7 +7,9 @@ export default function Select({
   options,
   name,
   errors,
+  isMultiple = false,
   dirtyFields,
+  customStyleClass = '',
   ...rest
 }) {
   const validityCSS = useValidityCSS(dirtyFields[name], errors[name]);
@@ -23,12 +25,17 @@ export default function Select({
       <select
         id={name}
         {...register(name)}
-        className={`block h-12 w-full pl-5 pr-12 sm:text-md border rounded-md focus:outline-none focus:border-indigo-500 border-slate-300 ${validityCSS}`}
+        className={`block h-12 w-full pl-5 pr-12 sm:text-md border rounded-md focus:outline-none focus:border-indigo-500 border-slate-300 overflow-y-scroll disabled:bg-gray-300 ${validityCSS} ${customStyleClass}`}
+        multiple={isMultiple}
         {...rest}
       >
-        {options.map((value) => (
-          <option key={value.slice(0, 5)} value={value}>
-            {value}
+        {options.map((optionItem) => (
+          <option
+            key={optionItem.text.slice(0, 5)}
+            value={optionItem.value}
+            className="even:bg-indigo-200 odd:bg-indigo-300"
+          >
+            {optionItem.text}
           </option>
         ))}
       </select>
