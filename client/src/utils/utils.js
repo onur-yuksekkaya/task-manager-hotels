@@ -8,3 +8,7 @@ export const getOnlyChangedInputs = (data, initialValues) => {
     return { id: initialValues.id, ...modifiedData };
   } else return undefined;
 };
+
+export const toggleModalState = (modal, toggleSetter) => {
+  toggleSetter((prevState) => ({ ...prevState, [modal]: !prevState[modal] }));
+};
