@@ -13,31 +13,41 @@ export const loginSchema = yup.object({
 });
 
 export const addTaskSchema = yup.object({
-  taskName: yup
+  title: yup
     .string()
     .min(3, 'Görev adı 3 karakterden az olamaz')
     .max(30, 'Görev adı 30 karakterden fazla olamaz')
     .required('Görev adı boş olamaz.'),
-  taskDesc: yup
+  description: yup
     .string()
     .min(10, 'Görev tanımı 10 karakterden az olamaz')
     .max(150, 'Görev tanımı 150 karakterden fazla olamaz')
     .required('Görev tanımı boş olamaz.'),
-  taskWorker: yup.string().required('Bir çalışan seçin.'),
+  room_number: yup
+    .number('Oda numaras bir sayı olmalı.')
+    .min(1, 'Oda numarası seçin')
+    .max(10, 'Oda numarası en fazla 10 haneli olmalıdır')
+    .required('Oda numarası boş olamaz.'),
+  assigned: yup.array().min(1, 'Çalışan seçin').required('Çalışan seçin'),
 });
 
 export const editTaskSchema = yup.object({
-  taskName: yup
+  title: yup
     .string()
     .min(3, 'Görev adı 3 karakterden az olamaz')
     .max(30, 'Görev adı 30 karakterden fazla olamaz')
     .required('Görev adı boş olamaz.'),
-  taskDesc: yup
+  description: yup
     .string()
     .min(10, 'Görev tanımı 10 karakterden az olamaz')
     .max(150, 'Görev tanımı 150 karakterden fazla olamaz')
     .required('Görev tanımı boş olamaz.'),
-  taskWorker: yup.string().required('Bir çalışan seçin.'),
+  room_number: yup
+    .number('Oda numaras bir sayı olmalı.')
+    .min(1, 'Oda numarası seçin')
+    .max(10, 'Oda numarası en fazla 10 haneli olmalıdır')
+    .required('Oda numarası boş olamaz.'),
+  assigned: yup.array().min(1, 'Çalışan seçin').required('Çalışan seçin'),
 });
 
 export const registerUserSchema = yup.object({
