@@ -18,7 +18,7 @@ import {
 } from '@heroicons/react/solid';
 
 import { tableHeaders, headerWidths, activeRowCount } from '../taskTableConfig';
-import { toggleModalState } from 'utils/utils';
+import { findUserNames, toggleModalState } from 'utils/utils';
 
 export default function ActiveTable({
   userList,
@@ -29,7 +29,7 @@ export default function ActiveTable({
   const { user } = useAuth();
 
   const [page, setPage] = useState(1);
-  const [activeList, setActiveList] = useState([]);
+  const [activeTasks, setActiveTasks] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [activeHasNextPage, setActiveHasNextPage] = useState(false);
   const [activeTableModals, setActiveTableModals] = useState({
@@ -45,8 +45,8 @@ export default function ActiveTable({
       page: pageNumber,
       rowCount: activeRowCount,
     });
-    if (data) {
-      setActiveList(data.taskList);
+    if (data && userList) {
+      setActiveTasks(findUserNames(userList, data.taskList));
       setActiveHasNextPage(data.hasNextPage);
     }
     setLoading(false);
@@ -102,7 +102,7 @@ export default function ActiveTable({
 
   useEffect(() => {
     loadActiveList(page);
-  }, [page]);
+  }, [page, userList]);
 
   return (
     <>
@@ -114,7 +114,7 @@ export default function ActiveTable({
         <Table
           tableActions={activeTableActions}
           tableHeaders={tableHeaders}
-          tableItems={activeList}
+          tableItems={activeTasks}
           headerWidths={headerWidths}
           selectedItem={selectedTask}
           setSelectedItem={setSelectedTask}

@@ -12,3 +12,18 @@ export const getOnlyChangedInputs = (data, initialValues) => {
 export const toggleModalState = (modal, toggleSetter) => {
   toggleSetter((prevState) => ({ ...prevState, [modal]: !prevState[modal] }));
 };
+
+export const findUserNames = (userList, taskList) => {
+  const returnedArray = [];
+  return taskList.map((task, index) => {
+    returnedArray.push(
+      task.assigned.map((userId) => {
+        const userFound = userList.find(
+          (user) => user.id.toString() === userId
+        );
+        return !!userFound ? `[${userFound.name} ${userFound.surname}]` : '';
+      })
+    );
+    return { ...task, assigned: returnedArray[index] };
+  });
+};
