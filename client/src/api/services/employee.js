@@ -2,12 +2,28 @@ import Api from "../api";
 
 export const getAllEmployees = async ({ page, rowCount }) => {
   try {
-    const { data } = await Api.get("employee", { page, rowCount });
+    const { data } = await Api.get(
+      `employee?page=${page}&rowCount=${rowCount}`
+    );
 
     if (data.result === "OK") {
       return {
         employeeList: data.employeeList,
         hasNextPage: data.hasNextPage,
+      };
+    }
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const employeePRM = async () => {
+  try {
+    const { data } = await Api.get("employee/prm");
+
+    if (data.result === "OK") {
+      return {
+        employeeList: data.employeeList,
       };
     }
   } catch (error) {

@@ -2,7 +2,7 @@ import db from "../configs/db";
 import { getPatchableProps, sanitizeEmployee } from "./utils";
 
 export const get_all_employees = async (req, res) => {
-  const { page, rowCount } = req.body;
+  const { page, rowCount } = req.params;
 
   const employeeCount = await db.user.count();
   const allEmployees = await db.user.findAll({
@@ -17,6 +17,23 @@ export const get_all_employees = async (req, res) => {
     result: "OK",
     employeeList: allEmployees.map(sanitizeEmployee),
     hasNextPage: page * rowCount < employeeCount,
+  });
+};
+
+export const get_all_employees_PRM = async (req, res) => {
+  const allEmployees = await db.user.findAll({
+    where: {
+      isAdmin: false,
+    },
+  });
+
+  res.send({
+    result: "OK",
+    employeeList: allEmployees.map((e) => ({
+      id: e.id,
+      name: e.name,
+      surname: e.surname,
+    })),
   });
 };
 
@@ -36,13 +53,13 @@ export const create_employee = async (req, res) => {
 };
 
 export const get_employee_by_id = async (req, res) => {
-  const selectedEmployee = await db.user.findAll({
+  const selectedEmployee = await db.user.findOne({
     where: {
       id: req.params.id,
     },
   });
 
-  const employeeData = selectedEmployee.length
+  const employeeData = selectedEmployee
     ? { employee: sanitizeEmployee(selectedEmployee) }
     : {};
 
