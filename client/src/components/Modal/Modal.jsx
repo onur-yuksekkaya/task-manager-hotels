@@ -10,7 +10,7 @@ export default function Modal({
   ...rest
 }) {
   function closeModal() {
-    setIsOpen(false);
+    setIsOpen();
     onCloseAction();
   }
 
