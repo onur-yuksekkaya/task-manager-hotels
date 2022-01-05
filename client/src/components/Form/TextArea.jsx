@@ -24,7 +24,7 @@ export default function TextArea({
       <textarea
         id={name}
         type={type}
-        className={`block h-20 w-full pl-5 pr-12 py-3 sm:text-md border rounded-md focus:outline-none focus:border-indigo-500 border-slate-300 resize-none ${validityCSS}`}
+        className={`block h-20 w-full pl-5 pr-12 py-3 sm:text-md border rounded-md focus:outline-none focus:border-indigo-500 border-slate-300 resize-none disabled:bg-gray-300 ${validityCSS}`}
         placeholder={placeholder}
         name={name}
         required

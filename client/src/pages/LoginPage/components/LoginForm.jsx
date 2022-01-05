@@ -10,7 +10,7 @@ import { CheckIcon } from '@heroicons/react/solid';
 
 export default function LoginForm({ handleSubmit, isLoading }) {
   return (
-    <Form onSubmit={handleSubmit} schema={loginSchema}>
+    <Form onSubmit={handleSubmit} schema={loginSchema} isDisabled={isLoading}>
       <TextInput
         name="email"
         labelText="Email"

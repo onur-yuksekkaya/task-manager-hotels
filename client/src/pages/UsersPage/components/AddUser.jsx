@@ -60,6 +60,7 @@ export default function AddUser({ setIsOpen, loadUserData }) {
       onSubmit={handleSubmit}
       className="bg-white w-[75vw] lg:w-[50vw]"
       schema={registerUserSchema}
+      isDisabled={isLoading}
     >
       <TextInput
         name="name"

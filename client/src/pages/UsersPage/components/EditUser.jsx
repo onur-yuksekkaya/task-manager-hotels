@@ -89,6 +89,7 @@ export default function EditUser({
       className="bg-white w-[75vw] lg:w-[50vw]"
       schema={registerUserSchema}
       defaultValues={userValues}
+      isDisabled={isLoading}
     >
       <TextInput
         name="name"

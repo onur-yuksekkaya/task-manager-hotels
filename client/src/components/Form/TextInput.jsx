@@ -24,7 +24,7 @@ export default function TextInput({
       <input
         id={name}
         type={type}
-        className={`block h-12 w-full pl-5 pr-12 sm:text-md border rounded-md focus:outline-none focus:border-indigo-500 border-slate-300 ${validityCSS}`}
+        className={`block h-12 w-full pl-5 pr-12 sm:text-md border rounded-md focus:outline-none focus:border-indigo-500 border-slate-300 disabled:bg-gray-300 ${validityCSS}`}
         placeholder={placeholder}
         name={name}
         required

@@ -7,6 +7,7 @@ export default function Form({
   onSubmit,
   schema = {},
   defaultValues = {},
+  isDisabled = false,
   ...rest
 }) {
   const {
@@ -22,19 +23,21 @@ export default function Form({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate {...rest}>
-      {React.Children.map(children, (child) => {
-        return child.props.name
-          ? React.createElement(child.type, {
-              ...{
-                ...child.props,
-                register,
-                errors,
-                dirtyFields,
-                key: child.props.name,
-              },
-            })
-          : child;
-      })}
+      <fieldset className="border-none" disabled={isDisabled}>
+        {React.Children.map(children, (child) => {
+          return child.props.name
+            ? React.createElement(child.type, {
+                ...{
+                  ...child.props,
+                  register,
+                  errors,
+                  dirtyFields,
+                  key: child.props.name,
+                },
+              })
+            : child;
+        })}
+      </fieldset>
     </form>
   );
 }
