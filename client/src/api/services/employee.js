@@ -1,4 +1,4 @@
-import Api from "../api";
+import Api from '../api';
 
 export const getAllEmployees = async ({ page, rowCount }) => {
   try {
@@ -6,7 +6,7 @@ export const getAllEmployees = async ({ page, rowCount }) => {
       `employee?page=${page}&rowCount=${rowCount}`
     );
 
-    if (data.result === "OK") {
+    if (data.result === 'OK') {
       return {
         employeeList: data.employeeList,
         hasNextPage: data.hasNextPage,
@@ -19,9 +19,9 @@ export const getAllEmployees = async ({ page, rowCount }) => {
 
 export const employeePRM = async () => {
   try {
-    const { data } = await Api.get("employee/prm");
+    const { data } = await Api.get('employee/prm');
 
-    if (data.result === "OK") {
+    if (data.result === 'OK') {
       return {
         employeeList: data.employeeList,
       };
@@ -35,7 +35,7 @@ export const getEmployeeData = async ({ id }) => {
   try {
     const { data } = await Api.get(`employee/${id}`);
 
-    if (data.result === "OK") {
+    if (data.result === 'OK') {
       return {
         employee: data.employee,
       };
@@ -62,7 +62,7 @@ export const updateEmployee = async ({
       phone,
     });
 
-    if (data.result === "OK") {
+    if (data.result === 'OK') {
       return {
         success: true,
       };
@@ -76,7 +76,7 @@ export const deleteEmployee = async ({ id }) => {
   try {
     const { data } = await Api.delete(`employee/${id}`);
 
-    if (data.result === "OK") {
+    if (data.result === 'OK') {
       return {
         message: data.message,
       };
@@ -88,7 +88,6 @@ export const deleteEmployee = async ({ id }) => {
 
 const EmployeeApi = {
   getAllEmployees,
-  createEmployee,
   getEmployeeData,
   updateEmployee,
   deleteEmployee,
