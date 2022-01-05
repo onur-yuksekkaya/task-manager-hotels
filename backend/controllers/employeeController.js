@@ -4,7 +4,12 @@ import { getPatchableProps, sanitizeEmployee } from './utils';
 export const get_all_employees = async (req, res) => {
   const { page, rowCount } = req.query;
 
-  const employeeCount = await db.user.count();
+  const employeeCount = await db.user.count({
+    where: {
+      isAdmin: false,
+    },
+  });
+
   const allEmployees = await db.user.findAll({
     where: {
       isAdmin: false,
