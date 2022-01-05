@@ -1,5 +1,5 @@
 import db from '../configs/db';
-import { sanitizeTask } from './utils';
+import { getPatchableProps, sanitizeTask } from './utils';
 
 export const get_all_tasks = async (req, res) => {
   const { page, rowCount } = req.query;
@@ -105,10 +105,9 @@ export const get_task_by_id = async (req, res) => {
 };
 
 export const update_task_detail = async (req, res) => {
-  const { assigned } = req.body;
-
-  const assignedObj = assigned ? { assigned } : {};
-  await db.task.update(assignedObj, { where: { id: req.params.id } });
+  await db.task.update(getPatchableProps(req.body), {
+    where: { id: req.params.id },
+  });
 
   res.send({ result: 'OK' });
 };

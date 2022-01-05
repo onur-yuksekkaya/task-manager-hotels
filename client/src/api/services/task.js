@@ -1,10 +1,10 @@
-import Api from "../api";
+import Api from '../api';
 
 const getAllTasks = async ({ page, rowCount }) => {
   try {
     const { data } = await Api.get(`/tasks?page=${page}&rowCount=${rowCount}`);
 
-    if (data.result === "OK") {
+    if (data.result === 'OK') {
       return {
         taskList: data.taskList,
         hasNextPage: data.hasNextPage,
@@ -21,7 +21,7 @@ const getActiveTasks = async ({ page, rowCount }) => {
       `/tasks/active?page=${page}&rowCount=${rowCount}`
     );
 
-    if (data.result === "OK") {
+    if (data.result === 'OK') {
       return {
         taskList: data.taskList,
         hasNextPage: data.hasNextPage,
@@ -38,7 +38,7 @@ const getHistoryTasks = async ({ page, rowCount }) => {
       `/tasks/history?page=${page}&rowCount=${rowCount}`
     );
 
-    if (data.result === "OK") {
+    if (data.result === 'OK') {
       return {
         taskList: data.taskList,
         hasNextPage: data.hasNextPage,
@@ -55,7 +55,7 @@ const getEmployeeTasks = async ({ page, rowCount, employeeId }) => {
       `/tasks/history?page=${page}&rowCount=${rowCount}&employeeId=${employeeId}`
     );
 
-    if (data.result === "OK") {
+    if (data.result === 'OK') {
       return {
         taskList: data.taskList,
         hasNextPage: data.hasNextPage,
@@ -68,14 +68,14 @@ const getEmployeeTasks = async ({ page, rowCount, employeeId }) => {
 
 const createTask = async ({ title, description, room_number, assigned }) => {
   try {
-    const { data } = await Api.post("/tasks/create", {
+    const { data } = await Api.post('/tasks/create', {
       title,
       description,
       room_number,
       assigned,
     });
 
-    if (data.result === "OK") {
+    if (data.result === 'OK') {
       return { success: true };
     }
   } catch (error) {
@@ -87,7 +87,7 @@ const getTaskById = async ({ id }) => {
   try {
     const { data } = await Api.get(`/tasks/${id}`);
 
-    if (data.result === "OK") {
+    if (data.result === 'OK') {
       return {
         task: data.task,
       };
@@ -97,11 +97,22 @@ const getTaskById = async ({ id }) => {
   }
 };
 
-const updateTask = async ({ id, assigned }) => {
+const updateTask = async ({
+  id,
+  assigned,
+  description,
+  room_number,
+  title,
+}) => {
   try {
-    const { data } = await Api.patch(`/tasks/${id}`, { assigned });
+    const { data } = await Api.patch(`/tasks/${id}`, {
+      assigned,
+      description,
+      room_number,
+      title,
+    });
 
-    if (data.result === "OK") {
+    if (data.result === 'OK') {
       return {
         success: true,
       };
@@ -115,7 +126,7 @@ const deleteTask = async ({ id }) => {
   try {
     const { data } = await Api.delete(`/tasks/${id}`);
 
-    if (data.result === "OK") {
+    if (data.result === 'OK') {
       return {
         message: data.message,
       };
