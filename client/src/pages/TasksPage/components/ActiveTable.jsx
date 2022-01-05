@@ -27,7 +27,10 @@ export default function ActiveTable({
 
   const loadActiveList = async (pageNumber = 1) => {
     setLoading(true);
-    const data = await TaskApi.getActiveTasks({ pageNumber, activeRowCount });
+    const data = await TaskApi.getActiveTasks({
+      page: pageNumber,
+      rowCount: activeRowCount,
+    });
     if (data) {
       setActiveList(data.taskList);
       setActiveHasNextPage(data.hasNextPage);

@@ -26,7 +26,10 @@ export default function HistoryTable({
 
   const loadHistoryList = async (pageNumber = 1) => {
     setLoading(true);
-    const data = await TaskApi.getHistoryTasks({ pageNumber, historyRowCount });
+    const data = await TaskApi.getHistoryTasks({
+      page: pageNumber,
+      rowCount: historyRowCount,
+    });
     if (data) {
       setHistoryList(data.taskList);
       setHistoryHasNexPage(data.hasNextPage);
