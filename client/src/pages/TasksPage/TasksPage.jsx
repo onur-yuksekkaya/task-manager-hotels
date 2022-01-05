@@ -1,27 +1,19 @@
 import React, { useState } from 'react';
 
 import { Tab } from '@headlessui/react';
-import Modal from 'components/Modal/Modal';
+
 import ActiveTable from './components/ActiveTable';
 import HistoryTable from './components/HistoryTable';
-import AddTask from './components/AddTask';
-import EditTask from './components/EditTask';
 
 import { ClipboardCheckIcon, ClipboardListIcon } from '@heroicons/react/solid';
 
 export default function TasksPage() {
-  const [selectedActiveItem, setSelectedActiveItem] = useState();
-  const [selectedHistoryItem, setSelectedHistoryItem] = useState();
-  const [isAddModalOpen, showAddModal] = useState(false);
-  const [isEditModalOpen, showEditModal] = useState(false);
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
   return (
     <>
       <Tab.Group
         onChange={(index) => {
-          setSelectedActiveItem('');
-          setSelectedHistoryItem('');
           setSelectedTabIndex(index);
         }}
       >
@@ -49,23 +41,14 @@ export default function TasksPage() {
         </Tab.List>
         <Tab.Panels>
           <Tab.Panel className="focus:outline-none">
-            <ActiveTable
-              setSelectedActiveItem={setSelectedActiveItem}
-              selectedActiveItem={selectedActiveItem}
-              showAddModal={showAddModal}
-              showEditModal={showEditModal}
-            />
+            <ActiveTable />
           </Tab.Panel>
           <Tab.Panel className="focus:outline-none">
-            <HistoryTable
-              setSelectedHistoryItem={setSelectedHistoryItem}
-              selectedHistoryItem={selectedHistoryItem}
-              showEditModal={showEditModal}
-            />
+            <HistoryTable />
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
-      {isAddModalOpen && (
+      {/* {isAddModalOpen && (
         <Modal
           setIsOpen={showAddModal}
           isOpen={isAddModalOpen}
@@ -73,16 +56,7 @@ export default function TasksPage() {
         >
           <AddTask setIsOpen={showAddModal} />
         </Modal>
-      )}
-      {isEditModalOpen && (
-        <Modal
-          setIsOpen={showEditModal}
-          isOpen={isEditModalOpen}
-          title="Görevi Düzenle"
-        >
-          <EditTask taskValues={[]} setIsOpen={showEditModal} />
-        </Modal>
-      )}
+      )} */}
     </>
   );
 }

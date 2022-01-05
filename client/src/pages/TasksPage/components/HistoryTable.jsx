@@ -11,18 +11,17 @@ import {
   historyRowCount,
 } from '../taskTableConfig';
 import { useAuth } from 'context/AuthContext';
+import Modal from 'components/Modal/Modal';
 
-export default function HistoryTable({
-  setSelectedHistoryItem,
-  selectedHistoryItem,
-  showEditModal,
-}) {
+export default function HistoryTable() {
   const { user } = useAuth();
 
   const [page, setPage] = useState(1);
   const [historyList, setHistoryList] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [historyHasNextPage, setHistoryHasNexPage] = useState(false);
+  const [selectedHistoryItem, setSelectedHistoryItem] = useState();
+  const [isEditModalOpen, showEditModal] = useState(false);
 
   const loadHistoryList = async (pageNumber = 1) => {
     setLoading(true);
@@ -70,19 +69,30 @@ export default function HistoryTable({
           <Loading color="text-indigo-600 my-52 mx-auto w-12 h-12" />
         </div>
       ) : (
-        <Table
-          tableActions={historyTableActions}
-          tableHeaders={tableHeaders}
-          tableItems={historyList}
-          headerWidths={headerWidths}
-          selectedItem={selectedHistoryItem}
-          setSelectedItem={setSelectedHistoryItem}
-          pageChangers={{ goToNextPage, goToPrevPage }}
-          page={page}
-          loadTable={loadHistoryList}
-          hasNextPage={historyHasNextPage}
-          isAdminViewing={user.isAdmin}
-        />
+        <>
+          <Table
+            tableActions={historyTableActions}
+            tableHeaders={tableHeaders}
+            tableItems={historyList}
+            headerWidths={headerWidths}
+            selectedItem={selectedHistoryItem}
+            setSelectedItem={setSelectedHistoryItem}
+            pageChangers={{ goToNextPage, goToPrevPage }}
+            page={page}
+            loadTable={loadHistoryList}
+            hasNextPage={historyHasNextPage}
+            isAdminViewing={user.isAdmin}
+          />
+
+          <Modal
+            setIsOpen={showEditModal}
+            isOpen={isEditModalOpen}
+            title="Görevi Düzenle"
+          >
+            YO MR WHITE
+            {/* <EditTask taskValues={[]} setIsOpen={showEditModal} /> */}
+          </Modal>
+        </>
       )}
     </>
   );

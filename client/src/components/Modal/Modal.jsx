@@ -6,10 +6,12 @@ export default function Modal({
   isOpen,
   setIsOpen,
   title = 'Modal Here',
+  onCloseAction = () => {},
   ...rest
 }) {
   function closeModal() {
     setIsOpen(false);
+    onCloseAction();
   }
 
   return (

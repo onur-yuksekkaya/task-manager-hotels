@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import TaskApi from 'api/services/task';
+import { useAuth } from 'context/AuthContext';
+
+import AddTask from './AddTask';
+import EditTask from './EditTask';
 
 import Table from 'components/Table/Table';
 import Loading from 'components/Loading/Loading';
+import Modal from 'components/Modal/Modal';
 import {
   CheckIcon,
   PencilIcon,
@@ -11,19 +16,16 @@ import {
 } from '@heroicons/react/solid';
 
 import { tableHeaders, headerWidths, activeRowCount } from '../taskTableConfig';
-import { useAuth } from 'context/AuthContext';
 
-export default function ActiveTable({
-  setSelectedActiveItem,
-  selectedActiveItem,
-  showAddModal,
-  showEditModal,
-}) {
+export default function ActiveTable() {
   const { user } = useAuth();
   const [page, setPage] = useState(1);
+  const [selectedActiveItem, setSelectedActiveItem] = useState();
   const [activeList, setActiveList] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [activeHasNextPage, setActiveHasNextPage] = useState(false);
+  const [isAddModalOpen, showAddModal] = useState(false);
+  const [isEditModalOpen, showEditModal] = useState(false);
 
   const loadActiveList = async (pageNumber = 1) => {
     setLoading(true);
@@ -103,6 +105,22 @@ export default function ActiveTable({
           isAdminViewing={user.isAdmin}
         />
       )}
+
+      <Modal
+        setIsOpen={showAddModal}
+        isOpen={isAddModalOpen}
+        title="Bir Görev Ekleyin"
+      >
+        <AddTask setIsOpen={showAddModal} />
+      </Modal>
+      <Modal
+        setIsOpen={showEditModal}
+        isOpen={isEditModalOpen}
+        title="Görevi Düzenle"
+      >
+        YO MR WHITE
+        {/* <EditTask taskValues={[]} setIsOpen={showEditModal} /> */}
+      </Modal>
     </>
   );
 }
