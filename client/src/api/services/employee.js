@@ -91,6 +91,7 @@ const EmployeeApi = {
   getEmployeeData,
   updateEmployee,
   deleteEmployee,
+  employeePRM,
 };
 
 export default EmployeeApi;
