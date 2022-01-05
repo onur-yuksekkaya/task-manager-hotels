@@ -1,5 +1,5 @@
-import db from "../configs/db";
-import { sanitizeTask } from "./utils";
+import db from '../configs/db';
+import { sanitizeTask } from './utils';
 
 export const get_all_tasks = async (req, res) => {
   const { page, rowCount } = req.query;
@@ -11,7 +11,7 @@ export const get_all_tasks = async (req, res) => {
   });
 
   res.send({
-    result: "OK",
+    result: 'OK',
     taskList: allTasks.map(sanitizeTask),
     hasNextPage: page * rowCount < taskCount,
   });
@@ -24,7 +24,7 @@ export const get_active_tasks = async (req, res) => {
   const allTasks = await db.task.findAll({
     where: {
       status: {
-        [db.Sequelize.Op.eq]: "active",
+        [db.Sequelize.Op.eq]: 'active',
       },
     },
     limit: rowCount || 10,
@@ -32,7 +32,7 @@ export const get_active_tasks = async (req, res) => {
   });
 
   res.send({
-    result: "OK",
+    result: 'OK',
     taskList: allTasks.map(sanitizeTask),
     hasNextPage: page * rowCount < taskCount,
   });
@@ -45,7 +45,7 @@ export const get_task_history = async (req, res) => {
   const allTasks = await db.task.findAll({
     where: {
       status: {
-        [db.Sequelize.Op.eq]: "done",
+        [db.Sequelize.Op.eq]: 'done',
       },
     },
     limit: rowCount || 10,
@@ -53,7 +53,7 @@ export const get_task_history = async (req, res) => {
   });
 
   res.send({
-    result: "OK",
+    result: 'OK',
     taskList: allTasks.map(sanitizeTask),
     hasNextPage: page * rowCount < taskCount,
   });
@@ -74,7 +74,7 @@ export const get_employee_tasks = async (req, res) => {
   });
 
   res.send({
-    result: "OK",
+    result: 'OK',
     taskList: allTasks.map(sanitizeTask),
     hasNextPage: page * rowCount < taskCount,
   });
@@ -90,7 +90,7 @@ export const create_task = async (req, res) => {
     assigned: assigned || [],
   });
 
-  res.send({ result: "OK" });
+  res.send({ result: 'OK' });
 };
 
 export const get_task_by_id = async (req, res) => {
@@ -99,9 +99,9 @@ export const get_task_by_id = async (req, res) => {
       id: req.params.id,
     },
   });
-  const taskObj = task.length ? { task: task[0] } : {};
+  const taskObj = task.length ? { task: sanitizeTask(task[0]) } : {};
 
-  res.send(Object.assign({ result: "OK" }, taskObj));
+  res.send(Object.assign({ result: 'OK' }, taskObj));
 };
 
 export const update_task_detail = async (req, res) => {
@@ -110,7 +110,7 @@ export const update_task_detail = async (req, res) => {
   const assignedObj = assigned ? { assigned } : {};
   await db.task.update(assignedObj, { where: { id: req.params.id } });
 
-  res.send({ result: "OK" });
+  res.send({ result: 'OK' });
 };
 
 export const delete_task = async (req, res) => {
@@ -121,10 +121,10 @@ export const delete_task = async (req, res) => {
   });
 
   if (result === 1)
-    res.send({ result: "OK", message: "general_task_deleted_text" });
+    res.send({ result: 'OK', message: 'general_task_deleted_text' });
   if (result === 0)
     res.send({
-      result: "OK",
-      message: "general_task_already_deleted_text",
+      result: 'OK',
+      message: 'general_task_already_deleted_text',
     });
 };
