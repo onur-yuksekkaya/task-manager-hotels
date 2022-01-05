@@ -41,15 +41,17 @@ export default function HistoryTable({
   const historyTableActions = [
     {
       name: 'edit',
+      text: 'Düzenle',
       action: () => showEditModal(true),
-      icon: <PencilIcon className="w-9/12 h-9/12" />,
+      icon: <PencilIcon className="w-6 h-6" />,
       showOnlySelect: true,
       isAdminControlled: true,
     },
     {
       name: 'delete',
+      text: 'Sil',
       action: () => {},
-      icon: <TrashIcon className="w-9/12 h-9/12" />,
+      icon: <TrashIcon className="w-6 h-6" />,
       showOnlySelect: true,
       isAdminControlled: true,
     },
