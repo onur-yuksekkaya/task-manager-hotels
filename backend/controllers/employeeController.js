@@ -38,6 +38,7 @@ export const get_all_employees_PRM = async (req, res) => {
       id: e.id,
       name: e.name,
       surname: e.surname,
+      department: e.department,
     })),
   });
 };
