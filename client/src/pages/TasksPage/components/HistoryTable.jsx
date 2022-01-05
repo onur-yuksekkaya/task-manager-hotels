@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { useAuth } from 'context/AuthContext';
 import TaskApi from 'api/services/task';
 
+import EditTask from './EditTask';
 import Table from 'components/Table/Table';
 import Loading from 'components/Loading/Loading';
+import Modal from 'components/Modal/Modal';
+import ConfirmModal from 'components/Modal/ConfirmModal';
+
 import { PencilIcon, TrashIcon } from '@heroicons/react/solid';
 
 import {
@@ -10,18 +15,25 @@ import {
   headerWidths,
   historyRowCount,
 } from '../taskTableConfig';
-import { useAuth } from 'context/AuthContext';
-import Modal from 'components/Modal/Modal';
+import { toggleModalState } from 'utils/utils';
 
-export default function HistoryTable() {
+export default function HistoryTable({
+  userList,
+  selectedTask,
+  setSelectedTask,
+  deleteTask,
+}) {
   const { user } = useAuth();
 
   const [page, setPage] = useState(1);
   const [historyList, setHistoryList] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [historyHasNextPage, setHistoryHasNexPage] = useState(false);
-  const [selectedHistoryItem, setSelectedHistoryItem] = useState();
-  const [isEditModalOpen, showEditModal] = useState(false);
+  const [historyTableModals, setHistoryTableModals] = useState({
+    add: false,
+    edit: false,
+    delete: false,
+  });
 
   const loadHistoryList = async (pageNumber = 1) => {
     setLoading(true);
@@ -36,15 +48,11 @@ export default function HistoryTable() {
     setLoading(false);
   };
 
-  useEffect(() => {
-    loadHistoryList(page);
-  }, [page]);
-
   const historyTableActions = [
     {
       name: 'edit',
       text: 'Düzenle',
-      action: () => showEditModal(true),
+      action: () => toggleModalState('edit', setHistoryTableModals),
       icon: <PencilIcon className="w-6 h-6" />,
       showOnlySelect: true,
       isAdminControlled: true,
@@ -52,7 +60,7 @@ export default function HistoryTable() {
     {
       name: 'delete',
       text: 'Sil',
-      action: () => {},
+      action: () => toggleModalState('delete', setHistoryTableModals),
       icon: <TrashIcon className="w-6 h-6" />,
       showOnlySelect: true,
       isAdminControlled: true,
@@ -61,6 +69,10 @@ export default function HistoryTable() {
 
   const goToNextPage = () => setPage(page + 1);
   const goToPrevPage = () => setPage(page - 1);
+
+  useEffect(() => {
+    loadHistoryList(page);
+  }, [page]);
 
   return (
     <>
@@ -75,8 +87,8 @@ export default function HistoryTable() {
             tableHeaders={tableHeaders}
             tableItems={historyList}
             headerWidths={headerWidths}
-            selectedItem={selectedHistoryItem}
-            setSelectedItem={setSelectedHistoryItem}
+            selectedItem={selectedTask}
+            setSelectedItem={setSelectedTask}
             pageChangers={{ goToNextPage, goToPrevPage }}
             page={page}
             loadTable={loadHistoryList}
@@ -84,14 +96,36 @@ export default function HistoryTable() {
             isAdminViewing={user.isAdmin}
           />
 
-          <Modal
-            setIsOpen={showEditModal}
-            isOpen={isEditModalOpen}
-            title="Görevi Düzenle"
-          >
-            YO MR WHITE
-            {/* <EditTask taskValues={[]} setIsOpen={showEditModal} /> */}
-          </Modal>
+          {historyTableModals.edit && (
+            <Modal
+              setIsOpen={() => toggleModalState('edit', setHistoryTableModals)}
+              isOpen={historyTableModals.edit}
+              title="Görevi Düzenle"
+            >
+              <EditTask
+                setIsOpen={() =>
+                  toggleModalState('edit', setHistoryTableModals)
+                }
+                selectedTask={selectedTask}
+                userList={userList}
+                loadTask={loadHistoryList}
+              />
+            </Modal>
+          )}
+          {historyTableModals.delete && (
+            <ConfirmModal
+              modalActionOnConfirm={() => {
+                deleteTask(selectedTask);
+                loadHistoryList(1);
+              }}
+              modalText="Görev silinsin mi?"
+              modalTitle="Görevi Sil"
+              modalSuccessText="Görev Silindi!"
+              modalToggle={() =>
+                toggleModalState('delete', setHistoryTableModals)
+              }
+            />
+          )}
         </>
       )}
     </>

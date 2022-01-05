@@ -1,59 +1,141 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+import TaskApi from 'api/services/task';
+import { editTaskSchema } from 'config/validationSchemas';
+import { getOnlyChangedInputs, toggleModalState } from 'utils/utils';
 
 import Form from 'components/Form/Form';
 import TextInput from 'components/Form/TextInput';
 import Button from 'components/Buttons/Button';
 import TextArea from 'components/Form/TextArea';
 import Select from 'components/Form/Select';
+import InfoModal from 'components/Modal/InfoModal';
 
 import { CheckIcon } from '@heroicons/react/solid';
 
-import { editTaskSchema } from 'config/validationSchemas';
+export default function EditTask({
+  setIsOpen,
+  userList,
+  selectedTask,
+  loadTask,
+}) {
+  const [isLoading, setLoading] = useState(true);
+  const [taskValues, setTaskValues] = useState();
+  const [taskEditModals, setTaskEditModals] = useState({
+    success: false,
+    fail: false,
+    noChange: false,
+  });
 
-const workersMock = [
-  { id: 1, name: 'Onur', title: 'Personal Jesus' },
-  { id: 2, name: 'Hilmi', title: 'Somebody I Used to Know' },
-  { id: 3, name: 'Yusuf', title: 'Dog Days Are Over' },
-];
-
-export default function EditTask({ taskValues = {}, setIsOpen }) {
-  const handleSubmit = () => {
-    console.log('YEAH');
-    setIsOpen(false);
+  const getTask = async () => {
+    setLoading(true);
+    const data = await TaskApi.getTaskById({ id: selectedTask });
+    if (data) {
+      setTaskValues(data.task);
+      setLoading(false);
+    }
   };
 
+  const handleSubmit = async (data) => {
+    setLoading(true);
+    const changedData = getOnlyChangedInputs(
+      { ...data, room_number: Number(data.room_number) },
+      taskValues
+    );
+    if (changedData) {
+      const response = await TaskApi.updateTask(changedData);
+      if (response) {
+        loadTask();
+        toggleModalState('success', setTaskEditModals);
+        setIsOpen();
+      } else {
+        toggleModalState('fail', setTaskEditModals);
+      }
+    } else {
+      toggleModalState('fail', setTaskEditModals);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getTask();
+  }, []);
+
   return (
-    <Form
-      onSubmit={handleSubmit}
-      className="bg-white w-[75vw] lg:w-[50vw]"
-      defaultValues={taskValues}
-      schema={editTaskSchema}
-    >
-      <TextInput
-        name="taskName"
-        labelText="Görev Adı"
-        type="text"
-        placeholder="Görev Adı"
-      />
-      <TextArea
-        name="taskDesc"
-        labelText="Görev Açıklaması"
-        type="text"
-        placeholder="Görev Açıklaması"
-      />
-      <Select
-        labelText="Çalışan"
-        name="taskWorker"
-        options={workersMock.map(
-          (worker) => `${worker.name} -> ${worker.title}`
-        )}
-      />
-      <Button
-        text={'Güncelle'}
-        customStyleClass="bg-green-600 text-white hover:bg-green-800"
-        type="submit"
-        icon={<CheckIcon className="w-6" />}
-      />
-    </Form>
+    <>
+      <Form
+        onSubmit={handleSubmit}
+        className="bg-white w-[75vw] lg:w-[50vw]"
+        schema={editTaskSchema}
+        isDisabled={isLoading}
+        valuesToSet={taskValues}
+      >
+        <TextInput
+          name="title"
+          labelText="Görev Adı"
+          type="text"
+          placeholder="Görev Adı"
+        />
+        <TextArea
+          name="description"
+          labelText="Görev Açıklaması"
+          type="text"
+          placeholder="Görev Açıklaması"
+        />
+        <TextInput
+          name="room_number"
+          labelText="Oda Numarası"
+          type="text"
+          placeholder="Oda No:"
+        />
+        <Select
+          labelText="Çalışan"
+          name="assigned"
+          options={
+            userList &&
+            userList.map((user) => ({
+              text: `${user.name} ${user.surname} ---> ${user.department}`,
+              value: user.id,
+            }))
+          }
+          isMultiple={true}
+          customStyleClass="h-24 py-4"
+        />
+        <Button
+          isLoading={isLoading}
+          text={'Oluştur'}
+          customStyleClass="bg-green-600 text-white hover:bg-green-800"
+          type="submit"
+          icon={<CheckIcon className="w-6" />}
+        />
+      </Form>
+      {taskEditModals.success && (
+        <InfoModal
+          modalTitle="Görev Güncellendi!"
+          modalToggle={() => {
+            toggleModalState('success', setTaskEditModals);
+          }}
+        />
+      )}
+      {taskEditModals.noChange && (
+        <InfoModal
+          modalTitle="Değişen Bir Şey Yok"
+          modalIcon="warning"
+          modalToggle={() => {
+            toggleModalState('noChange', setTaskEditModals);
+          }}
+        />
+      )}
+
+      {taskEditModals.fail && (
+        <InfoModal
+          modalTitle="Görev Güncellenemedi!"
+          modalIcon="error"
+          modalToggle={() => {
+            toggleModalState('fail', setTaskEditModals);
+          }}
+        />
+      )}
+    </>
   );
 }
