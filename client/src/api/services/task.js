@@ -103,6 +103,7 @@ const updateTask = async ({
   description,
   room_number,
   title,
+  status,
 }) => {
   try {
     const { data } = await Api.patch(`/tasks/${id}`, {
@@ -110,6 +111,7 @@ const updateTask = async ({
       description,
       room_number,
       title,
+      status,
     });
 
     if (data.result === 'OK') {
