@@ -29,9 +29,9 @@ export default function Select({
         multiple={isMultiple}
         {...rest}
       >
-        {options.map((optionItem) => (
+        {options.map((optionItem, index) => (
           <option
-            key={optionItem.text.slice(0, 5)}
+            key={optionItem.text.slice(0, 5) + index}
             value={optionItem.value}
             className="even:bg-indigo-200 odd:bg-indigo-300"
           >
