@@ -7,7 +7,7 @@ import EmployeeApi, {
   deleteEmployee,
   getEmployeeData,
 } from 'api/services/employee';
-import { tableHeaders, headerWidths } from './userTableConfig';
+import { tableHeaders, headerWidths, userRowCount } from './userTableConfig';
 
 import Table from 'components/Table/Table';
 import Modal from 'components/Modal/Modal';
@@ -16,8 +16,6 @@ import EditUser from './components/EditUser';
 import Loading from 'components/Loading/Loading';
 
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/solid';
-
-const rowCount = 10;
 
 export default function UsersPage() {
   const { user } = useAuth();
@@ -37,7 +35,7 @@ export default function UsersPage() {
     setLoading(true);
     const { employeeList, hasNextPage } = await EmployeeApi.getAllEmployees({
       page: pageNumber,
-      rowCount,
+      rowCount: userRowCount,
     });
     setTableHasNextPage(hasNextPage);
     setUserList(employeeList);

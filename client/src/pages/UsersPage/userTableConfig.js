@@ -17,3 +17,4 @@ export const tableKeys = [
 ];
 
 export const headerWidths = [5, 15, 15, 25, 20];
+export const userRowCount = 10;
