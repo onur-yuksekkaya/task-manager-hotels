@@ -24,10 +24,10 @@ export default function AddTask({ setIsOpen, loadTask, userList }) {
   const handleSubmit = async (data) => {
     setLoading(true);
     const response = await TaskApi.createTask(data);
-    if (response.success) {
+    if (response) {
       toggleModalState('success', setTaskAddModals);
-      setIsOpen();
       loadTask();
+      setIsOpen();
     } else {
       setLoading(false);
       toggleModalState('fail', setTaskAddModals);

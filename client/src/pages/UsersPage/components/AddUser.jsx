@@ -21,13 +21,12 @@ export default function AddUser({ setIsOpen, loadUserData }) {
   const handleSubmit = async (data) => {
     setLoading(true);
     try {
-      const registerResponse = await LoginApi.register(data);
-      if (registerResponse) {
-        console.log(registerResponse);
+      const response = await LoginApi.register(data);
+      if (response) {
+        toggleModalState('success', setUserAddModals);
+        loadUserData();
+        setIsOpen();
       }
-      toggleModalState('success', setUserAddModals);
-      loadUserData();
-      setIsOpen();
     } catch (err) {
       toggleModalState('fail', setUserAddModals);
     } finally {
