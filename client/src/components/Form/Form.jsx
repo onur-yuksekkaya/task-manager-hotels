@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import useYupValidationResolver from 'hooks/useYupValidationResolver';
 
@@ -7,6 +7,7 @@ export default function Form({
   onSubmit,
   schema = {},
   defaultValues = {},
+  valuesToSet = {},
   isDisabled = false,
   ...rest
 }) {
@@ -14,12 +15,20 @@ export default function Form({
     register,
     handleSubmit,
     formState: { errors, dirtyFields },
+    setValue,
   } = useForm({
     resolver: useYupValidationResolver(schema),
     mode: 'onChange',
     reValidateMode: 'onChange',
     defaultValues,
   });
+
+  useEffect(() => {
+    const formValueKeys = Object.keys(valuesToSet);
+    if (formValueKeys.length) {
+      formValueKeys.forEach((key) => setValue(key, valuesToSet[key]));
+    }
+  }, [valuesToSet]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate {...rest}>
