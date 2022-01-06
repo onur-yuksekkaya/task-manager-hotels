@@ -1,15 +1,16 @@
-import Api from "../api";
+import Api from '../api';
 
 const loginUser = async ({ email, password }) => {
   try {
-    const { data } = await Api.post("auth/login", { email, password });
+    const { data } = await Api.post('auth/login', { email, password });
 
-    if (data.result === "OK") {
+    if (data.result === 'OK') {
       return {
         sessionId: data.sessionId,
         name: data.name,
         department: data.department,
         isAdmin: data.isAdmin,
+        id: data.id,
       };
     }
   } catch (error) {
@@ -26,7 +27,7 @@ const registerUser = async ({
   password,
 }) => {
   try {
-    const { data } = await Api.post("auth/register", {
+    const { data } = await Api.post('auth/register', {
       name,
       surname,
       email,
@@ -35,7 +36,7 @@ const registerUser = async ({
       password,
     });
 
-    if (data.result === "OK") {
+    if (data.result === 'OK') {
       return {
         createdAt: data.createdAt,
       };

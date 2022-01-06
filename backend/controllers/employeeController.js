@@ -34,12 +34,17 @@ export const get_all_employees_PRM = async (req, res) => {
 
   res.send({
     result: 'OK',
-    employeeList: allEmployees.map((e) => ({
-      id: e.id,
-      name: e.name,
-      surname: e.surname,
-      department: e.department,
-    })),
+    employeeList: allEmployees.reduce(
+      (prevEmployee, currentEmployee) => ({
+        ...prevEmployee,
+        [currentEmployee.id]: {
+          name: currentEmployee.name,
+          surname: currentEmployee.surname,
+          department: currentEmployee.department,
+        },
+      }),
+      {}
+    ),
   });
 };
 

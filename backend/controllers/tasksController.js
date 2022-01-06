@@ -106,7 +106,6 @@ export const get_employee_tasks_active = async (req, res) => {
 
 export const get_employee_tasks_history = async (req, res) => {
   const { page, rowCount, employeeId } = req.query;
-  console.log(employeeId);
 
   const taskCount = await db.task.count();
   const allTasks = await db.task.findAll({

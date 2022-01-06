@@ -1,4 +1,4 @@
-import db from "../configs/db";
+import db from '../configs/db';
 
 export const login_user = async (req, res) => {
   const { email, password } = req.body;
@@ -12,13 +12,14 @@ export const login_user = async (req, res) => {
   if (loggedUser) {
     res.statusCode = 200;
     res.send({
-      result: "OK",
-      sessionId: "123-456-ABC",
-      name: loggedUser[0].name + " " + loggedUser[0].surname,
-      department: loggedUser[0].department,
-      isAdmin: loggedUser[0].isAdmin,
+      result: 'OK',
+      sessionId: '123-456-ABC',
+      name: loggedUser.name + ' ' + loggedUser.surname,
+      department: loggedUser.department,
+      isAdmin: loggedUser.isAdmin,
+      id: loggedUser.id,
     });
-  } else res.send({ result: "Error", message: "User not found!" });
+  } else res.send({ result: 'Error', message: 'User not found!' });
 };
 
 export const register_user = async (req, res) => {
@@ -33,5 +34,5 @@ export const register_user = async (req, res) => {
     password,
   });
 
-  res.send({ result: "OK", createdAt: registeredUser.createdAt });
+  res.send({ result: 'OK', createdAt: registeredUser.createdAt });
 };
