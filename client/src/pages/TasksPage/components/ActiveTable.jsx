@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import TaskApi from 'api/services/task';
 import { useAuth } from 'context/AuthContext';
+import { useTask } from 'context/TaskContext';
+import { closeModal, findUserNames, toggleModalState } from 'utils/utils';
 
 import AddTask from './AddTask';
 import EditTask from './EditTask';
@@ -17,46 +19,25 @@ import {
   TrashIcon,
 } from '@heroicons/react/solid';
 
-import { tableHeaders, headerWidths, activeRowCount } from '../taskTableConfig';
-import { closeModal, findUserNames, toggleModalState } from 'utils/utils';
+import { tableHeaders, headerWidths } from '../taskTableConfig';
 
-export default function ActiveTable({
-  userList,
-  deleteTask,
-  selectedTask,
-  setSelectedTask,
-}) {
+export default function ActiveTable({ userList }) {
   const { user } = useAuth();
+  const {
+    loadActiveTasks,
+    activeTasks,
+    deleteTask,
+    selectedTask,
+    setSelectedTask,
+  } = useTask();
 
   const [page, setPage] = useState(1);
-  const [activeTasks, setActiveTasks] = useState([]);
-  const [isLoading, setLoading] = useState(true);
-  const [activeHasNextPage, setActiveHasNextPage] = useState(false);
   const [activeTableModals, setActiveTableModals] = useState({
     add: false,
     edit: false,
     delete: false,
     complete: false,
   });
-
-  const loadActiveTasks = async (pageNumber = 1) => {
-    setLoading(true);
-    const data = user.isAdmin
-      ? await TaskApi.getActiveTasks({
-          page: pageNumber,
-          rowCount: activeRowCount,
-        })
-      : await TaskApi.getEmployeeActiveTasks({
-          page: pageNumber,
-          rowCount: activeRowCount,
-          employeeId: user.id,
-        });
-    if (data && userList) {
-      setActiveTasks(findUserNames(userList, data.taskList));
-      setActiveHasNextPage(data.hasNextPage);
-    }
-    setLoading(false);
-  };
 
   const completeTask = async (id) => {
     await TaskApi.updateTask({ id, status: 'done' });
@@ -106,13 +87,17 @@ export default function ActiveTable({
     },
   ];
 
+  const taskListWithNames = useMemo(() => {
+    return findUserNames(userList, activeTasks.data);
+  }, [activeTasks.data]);
+
   useEffect(() => {
     loadActiveTasks(page);
   }, [page, userList]);
 
   return (
     <>
-      {isLoading ? (
+      {activeTasks.loading ? (
         <div className="w-full h-full flex">
           <Loading color="text-indigo-600 my-52 mx-auto w-12 h-12" />
         </div>
@@ -120,14 +105,14 @@ export default function ActiveTable({
         <Table
           tableActions={activeTableActions}
           tableHeaders={tableHeaders}
-          tableItems={activeTasks}
+          tableItems={taskListWithNames}
           headerWidths={headerWidths}
           selectedItem={selectedTask}
           setSelectedItem={setSelectedTask}
           pageChangers={{ goToNextPage, goToPrevPage }}
           page={page}
           loadTable={loadActiveTasks}
-          hasNextPage={activeHasNextPage}
+          hasNextPage={activeTasks.hasNextPage}
           isAdminViewing={user.isAdmin}
         />
       )}

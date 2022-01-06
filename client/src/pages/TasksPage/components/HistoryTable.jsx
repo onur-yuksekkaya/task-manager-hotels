@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useAuth } from 'context/AuthContext';
 import TaskApi from 'api/services/task';
 
@@ -10,48 +10,29 @@ import ConfirmModal from 'components/Modal/ConfirmModal';
 
 import { PencilIcon, TrashIcon } from '@heroicons/react/solid';
 
-import {
-  tableHeaders,
-  headerWidths,
-  historyRowCount,
-} from '../taskTableConfig';
+import { tableHeaders, headerWidths } from '../taskTableConfig';
 import { closeModal, findUserNames, toggleModalState } from 'utils/utils';
+import { useTask } from 'context/TaskContext';
 
-export default function HistoryTable({
-  userList,
-  selectedTask,
-  setSelectedTask,
-  deleteTask,
-}) {
+export default function HistoryTable({ userList }) {
   const { user } = useAuth();
+  const {
+    loadHistoryTasks,
+    historyTasks,
+    deleteTask,
+    selectedTask,
+    setSelectedTask,
+  } = useTask();
 
   const [page, setPage] = useState(1);
-  const [historyList, setHistoryList] = useState([]);
-  const [isLoading, setLoading] = useState(true);
-  const [historyHasNextPage, setHistoryHasNexPage] = useState(false);
   const [historyTableModals, setHistoryTableModals] = useState({
     edit: false,
     delete: false,
   });
 
-  const loadHistoryTasks = async (pageNumber = 1) => {
-    setLoading(true);
-    const data = user.isAdmin
-      ? await TaskApi.getHistoryTasks({
-          page: pageNumber,
-          rowCount: historyRowCount,
-        })
-      : await TaskApi.getEmployeeHistoryTasks({
-          page: pageNumber,
-          rowCount: historyRowCount,
-          employeeId: user.id,
-        });
-    if (data && userList) {
-      setHistoryList(findUserNames(userList, data.taskList));
-      setHistoryHasNexPage(data.hasNextPage);
-    }
-    setLoading(false);
-  };
+  const taskListWithNames = useMemo(() => {
+    return findUserNames(userList, historyTasks.data);
+  }, [historyTasks.data]);
 
   const goToNextPage = () => setPage(page + 1);
   const goToPrevPage = () => setPage(page - 1);
@@ -81,7 +62,7 @@ export default function HistoryTable({
 
   return (
     <>
-      {isLoading ? (
+      {historyTasks.loading ? (
         <div className="w-full h-full flex">
           <Loading color="text-indigo-600 my-52 mx-auto w-12 h-12" />
         </div>
@@ -89,14 +70,14 @@ export default function HistoryTable({
         <Table
           tableActions={historyTableActions}
           tableHeaders={tableHeaders}
-          tableItems={historyList}
+          tableItems={taskListWithNames}
           headerWidths={headerWidths}
           selectedItem={selectedTask}
           setSelectedItem={setSelectedTask}
           pageChangers={{ goToNextPage, goToPrevPage }}
           page={page}
           loadTable={loadHistoryTasks}
-          hasNextPage={historyHasNextPage}
+          hasNextPage={historyTasks.hasNextPage}
           isAdminViewing={user.isAdmin}
         />
       )}

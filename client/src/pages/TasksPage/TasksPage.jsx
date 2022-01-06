@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import { useTask } from 'context/TaskContext';
+import EmployeeApi from 'api/services/employee';
+import { closeModal, toggleModalState } from 'utils/utils';
 
 import { Tab } from '@headlessui/react';
 
 import ActiveTable from './components/ActiveTable';
 import HistoryTable from './components/HistoryTable';
-
-import { ClipboardCheckIcon, ClipboardListIcon } from '@heroicons/react/solid';
-import EmployeeApi from 'api/services/employee';
-import TaskApi from 'api/services/task';
-import { closeModal, toggleModalState } from 'utils/utils';
 import InfoModal from 'components/Modal/InfoModal';
 
+import { ClipboardCheckIcon, ClipboardListIcon } from '@heroicons/react/solid';
+
 export default function TasksPage() {
+  const { selectedTask, setSelectedTask } = useTask();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
-  const [selectedTask, setSelectedTask] = useState('');
   const [userList, setUserList] = useState([]);
   const [taskPageModals, setTaskPageModals] = useState({ userFail: false });
 
@@ -24,11 +24,6 @@ export default function TasksPage() {
     } else {
       toggleModalState('userFail', setTaskPageModals);
     }
-  };
-
-  const deleteTask = async (id) => {
-    await TaskApi.deleteTask({ id });
-    setSelectedTask('');
   };
 
   useEffect(() => {
@@ -67,20 +62,10 @@ export default function TasksPage() {
         </Tab.List>
         <Tab.Panels>
           <Tab.Panel className="focus:outline-none">
-            <ActiveTable
-              userList={userList}
-              deleteTask={deleteTask}
-              selectedTask={selectedTask}
-              setSelectedTask={setSelectedTask}
-            />
+            <ActiveTable userList={userList} selectedTask={selectedTask} />
           </Tab.Panel>
           <Tab.Panel className="focus:outline-none">
-            <HistoryTable
-              userList={userList}
-              selectedTask={selectedTask}
-              setSelectedTask={setSelectedTask}
-              deleteTask={deleteTask}
-            />
+            <HistoryTable userList={userList} selectedTask={selectedTask} />
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>

@@ -21,18 +21,12 @@ export const openModal = (modal, modalSetter) => {
 };
 
 export const findUserNames = (userList, taskList) => {
-  const returnedArray = [];
-  return taskList.map((task, index) => {
-    returnedArray.push(
-      task.assigned.map((userId) => {
-        const userFound = userList.find(
-          (user) => user.id.toString() === userId
-        );
-        return !!userFound
-          ? `[${userFound.name} ${userFound.surname}]`
-          : '[Çalışan Yok]';
-      })
-    );
-    return { ...task, assigned: returnedArray[index] };
-  });
+  return taskList.map((task) => ({
+    ...task,
+    assigned: task.assigned.map((user) =>
+      userList[user]
+        ? `${userList[user].name} ${userList[user].surname}, `
+        : 'Çalışan Yok,'
+    ),
+  }));
 };

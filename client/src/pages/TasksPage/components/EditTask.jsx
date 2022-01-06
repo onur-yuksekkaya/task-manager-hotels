@@ -56,7 +56,7 @@ export default function EditTask({
         toggleModalState('fail', setTaskEditModals);
       }
     } else {
-      toggleModalState('fail', setTaskEditModals);
+      toggleModalState('noChange', setTaskEditModals);
     }
     setLoading(false);
   };
@@ -67,6 +67,9 @@ export default function EditTask({
 
   return (
     <>
+      {/* FOCUSTRAP FOCUS  */}
+      <input className="w-0 h-0 bg-transparent" tabIndex={0}></input>
+      {/* FOCUSTRAP FOCUS  */}
       <Form
         onSubmit={handleSubmit}
         className="bg-white w-[75vw] lg:w-[50vw]"
@@ -97,9 +100,9 @@ export default function EditTask({
           name="assigned"
           options={
             userList &&
-            userList.map((user) => ({
-              text: `${user.name} ${user.surname} ---> ${user.department}`,
-              value: user.id,
+            Object.keys(userList).map((user) => ({
+              text: `${userList[user].name} ${userList[user].surname} ---> ${userList[user].department}`,
+              value: user,
             }))
           }
           isMultiple={true}

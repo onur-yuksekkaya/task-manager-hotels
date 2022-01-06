@@ -65,9 +65,9 @@ export default function AddTask({ setIsOpen, loadTask, userList }) {
           name="assigned"
           options={
             userList &&
-            userList.map((user) => ({
-              text: `${user.name} ${user.surname} ---> ${user.department}`,
-              value: user.id,
+            Object.keys(userList).map((user) => ({
+              text: `${userList[user].name} ${userList[user].surname} ---> ${userList[user].department}`,
+              value: user,
             }))
           }
           isMultiple={true}

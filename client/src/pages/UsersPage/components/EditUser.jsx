@@ -45,6 +45,9 @@ export default function EditUser({ setIsOpen, userValues, loadUserData }) {
 
   return (
     <>
+      {/* FOCUSTRAP FOCUS  */}
+      <input className="w-0 h-0 bg-transparent" tabIndex={0}></input>
+      {/* FOCUSTRAP FOCUS  */}
       <Form
         onSubmit={handleSubmit}
         className="bg-white w-[75vw] lg:w-[50vw]"
