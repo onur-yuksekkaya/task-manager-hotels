@@ -59,7 +59,7 @@ export const get_task_history = async (req, res) => {
   });
 };
 
-export const get_employee_tasks = async (req, res) => {
+export const get_employee_tasks_all = async (req, res) => {
   const { page, rowCount, employeeId } = req.query;
 
   const taskCount = await db.task.count();
@@ -67,6 +67,55 @@ export const get_employee_tasks = async (req, res) => {
     where: {
       assigned: {
         [db.Sequelize.Op.contains]: [employeeId],
+      },
+    },
+    limit: rowCount || 10,
+    offset: page * rowCount - rowCount || 0,
+  });
+
+  res.send({
+    result: 'OK',
+    taskList: allTasks.map(sanitizeTask),
+    hasNextPage: page * rowCount < taskCount,
+  });
+};
+
+export const get_employee_tasks_active = async (req, res) => {
+  const { page, rowCount, employeeId } = req.query;
+
+  const taskCount = await db.task.count();
+  const allTasks = await db.task.findAll({
+    where: {
+      assigned: {
+        [db.Sequelize.Op.contains]: [employeeId],
+      },
+      status: {
+        [db.Sequelize.Op.eq]: 'active',
+      },
+    },
+    limit: rowCount || 10,
+    offset: page * rowCount - rowCount || 0,
+  });
+
+  res.send({
+    result: 'OK',
+    taskList: allTasks.map(sanitizeTask),
+    hasNextPage: page * rowCount < taskCount,
+  });
+};
+
+export const get_employee_tasks_history = async (req, res) => {
+  const { page, rowCount, employeeId } = req.query;
+  console.log(employeeId);
+
+  const taskCount = await db.task.count();
+  const allTasks = await db.task.findAll({
+    where: {
+      assigned: {
+        [db.Sequelize.Op.contains]: [employeeId],
+      },
+      status: {
+        [db.Sequelize.Op.eq]: 'done',
       },
     },
     limit: rowCount || 10,
