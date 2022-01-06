@@ -52,7 +52,39 @@ const getHistoryTasks = async ({ page, rowCount }) => {
 const getEmployeeTasks = async ({ page, rowCount, employeeId }) => {
   try {
     const { data } = await Api.get(
-      `/tasks/history?page=${page}&rowCount=${rowCount}&employeeId=${employeeId}`
+      `/tasks/employee?page=${page}&rowCount=${rowCount}&employeeId=${employeeId}`
+    );
+
+    if (data.result === 'OK') {
+      return {
+        taskList: data.taskList,
+        hasNextPage: data.hasNextPage,
+      };
+    }
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+const getEmployeeHistoryTasks = async ({ page, rowCount, employeeId }) => {
+  try {
+    const { data } = await Api.get(
+      `/tasks/employee/history?page=${page}&rowCount=${rowCount}&employeeId=${employeeId}`
+    );
+
+    if (data.result === 'OK') {
+      return {
+        taskList: data.taskList,
+        hasNextPage: data.hasNextPage,
+      };
+    }
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+const getEmployeeActiveTasks = async ({ page, rowCount, employeeId }) => {
+  try {
+    const { data } = await Api.get(
+      `/tasks/employee/active?page=${page}&rowCount=${rowCount}&employeeId=${employeeId}`
     );
 
     if (data.result === 'OK') {
@@ -143,6 +175,8 @@ const TaskApi = {
   getActiveTasks,
   getHistoryTasks,
   getEmployeeTasks,
+  getEmployeeActiveTasks,
+  getEmployeeHistoryTasks,
   createTask,
   getTaskById,
   updateTask,
