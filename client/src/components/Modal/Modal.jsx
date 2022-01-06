@@ -22,7 +22,7 @@ export default function Modal({
       {...rest}
     >
       <Dialog.Overlay className="fixed inset-0 bg-black opacity-50" />
-      <div className="relative bg-white border border-gray-300 shadow-lg rounded mx-auto p-8 max-w-[90%]">
+      <div className="relative bg-white border border-gray-300 shadow-lg rounded mx-auto p-8 max-w-[90%] scale-[.7] lg:scale-95">
         <Dialog.Title className="text-lg font-bold text-indigo-600 text-center my-3">
           {title}
         </Dialog.Title>

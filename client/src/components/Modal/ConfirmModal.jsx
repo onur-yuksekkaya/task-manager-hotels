@@ -42,7 +42,6 @@ export default function ConfirmModal({
       didOpen: () => {
         setTimeout(() => {
           ConfirmationSwal.close();
-          modalClose();
         }, 1500);
       },
     });

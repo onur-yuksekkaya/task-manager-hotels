@@ -18,7 +18,6 @@ export default function InfoModal({
       didOpen: () => {
         setTimeout(() => {
           InfoSwal.close();
-          modalClose();
         }, 1500);
       },
     });
