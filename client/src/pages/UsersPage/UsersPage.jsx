@@ -13,7 +13,7 @@ import Loading from 'components/Loading/Loading';
 import ConfirmModal from 'components/Modal/ConfirmModal';
 
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/solid';
-import { toggleModalState } from 'utils/utils';
+import { closeModal, toggleModalState } from 'utils/utils';
 
 export default function UsersPage() {
   const { user } = useAuth();
@@ -150,7 +150,8 @@ export default function UsersPage() {
           modalText="Çalışan silinsin mi?"
           modalTitle="Çalışan Sil"
           modalSuccessText="Çalışan Silindi!"
-          modalToggle={() => toggleModalState('delete', setUserPageModals)}
+          modalConfirmButtonText="Sil"
+          modalClose={() => closeModal('delete', setUserPageModals)}
         />
       )}
     </>

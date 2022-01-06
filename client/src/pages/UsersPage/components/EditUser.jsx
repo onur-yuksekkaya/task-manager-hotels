@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 
 import { updateEmployee } from 'api/services/employee';
 import { registerUserSchema } from 'config/validationSchemas';
-import { getOnlyChangedInputs, toggleModalState } from 'utils/utils';
+import {
+  closeModal,
+  getOnlyChangedInputs,
+  toggleModalState,
+} from 'utils/utils';
 
 import Button from 'components/Buttons/Button';
 import Form from 'components/Form/Form';
@@ -90,8 +94,8 @@ export default function EditUser({ setIsOpen, userValues, loadUserData }) {
         <InfoModal
           modalTitle="Çalışan Güncellendi!"
           modalIcon="success"
-          modalToggle={() => {
-            toggleModalState('success', setUserEditModals);
+          modalClose={() => {
+            closeModal('success', setUserEditModals);
           }}
         />
       )}
@@ -99,8 +103,8 @@ export default function EditUser({ setIsOpen, userValues, loadUserData }) {
         <InfoModal
           modalTitle="Değişen Bir Şey Yok"
           modalIcon="warning"
-          modalToggle={() => {
-            toggleModalState('noChange', setUserEditModals);
+          modalClose={() => {
+            closeModal('noChange', setUserEditModals);
           }}
         />
       )}
@@ -109,7 +113,7 @@ export default function EditUser({ setIsOpen, userValues, loadUserData }) {
         <userEditModalsInfoModal
           modalTitle="Çalışan Güncellenemedi!"
           modalIcon="error"
-          modalToggle={() => {
+          modalClose={() => {
             toggleModalState('fail', setUserEditModals);
           }}
         />

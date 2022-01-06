@@ -12,7 +12,7 @@ import { addTaskSchema } from 'config/validationSchemas';
 
 import TaskApi from 'api/services/task';
 import InfoModal from 'components/Modal/InfoModal';
-import { toggleModalState } from 'utils/utils';
+import { closeModal, toggleModalState } from 'utils/utils';
 
 export default function AddTask({ setIsOpen, loadTask, userList }) {
   const [isLoading, setLoading] = useState(false);
@@ -86,8 +86,8 @@ export default function AddTask({ setIsOpen, loadTask, userList }) {
       {taskAddModals.success && (
         <InfoModal
           modalTitle="Görev Eklendi!"
-          modalToggle={() => {
-            toggleModalState('success', setTaskAddModals);
+          modalClose={() => {
+            closeModal('success', setTaskAddModals);
           }}
         />
       )}
@@ -96,8 +96,8 @@ export default function AddTask({ setIsOpen, loadTask, userList }) {
         <InfoModal
           modalTitle="Görev Eklenemedi!"
           modalIcon="error"
-          modalToggle={() => {
-            toggleModalState('fail', setTaskAddModals);
+          modalClose={() => {
+            closeModal('fail', setTaskAddModals);
           }}
         />
       )}

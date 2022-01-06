@@ -18,7 +18,7 @@ import {
 } from '@heroicons/react/solid';
 
 import { tableHeaders, headerWidths, activeRowCount } from '../taskTableConfig';
-import { findUserNames, toggleModalState } from 'utils/utils';
+import { closeModal, findUserNames, toggleModalState } from 'utils/utils';
 
 export default function ActiveTable({
   userList,
@@ -39,12 +39,18 @@ export default function ActiveTable({
     complete: false,
   });
 
-  const loadActiveList = async (pageNumber = 1) => {
+  const loadActiveTasks = async (pageNumber = 1) => {
     setLoading(true);
-    const data = await TaskApi.getActiveTasks({
-      page: pageNumber,
-      rowCount: activeRowCount,
-    });
+    const data = user.isAdmin
+      ? await TaskApi.getActiveTasks({
+          page: pageNumber,
+          rowCount: activeRowCount,
+        })
+      : await TaskApi.getEmployeeActiveTasks({
+          page: pageNumber,
+          rowCount: activeRowCount,
+          employeeId: user.id,
+        });
     if (data && userList) {
       setActiveTasks(findUserNames(userList, data.taskList));
       setActiveHasNextPage(data.hasNextPage);
@@ -55,7 +61,7 @@ export default function ActiveTable({
   const completeTask = async (id) => {
     await TaskApi.updateTask({ id, status: 'done' });
     setSelectedTask('');
-    loadActiveList(1);
+    loadActiveTasks(1);
   };
 
   const goToNextPage = () => setPage(page + 1);
@@ -101,7 +107,7 @@ export default function ActiveTable({
   ];
 
   useEffect(() => {
-    loadActiveList(page);
+    loadActiveTasks(page);
   }, [page, userList]);
 
   return (
@@ -120,12 +126,11 @@ export default function ActiveTable({
           setSelectedItem={setSelectedTask}
           pageChangers={{ goToNextPage, goToPrevPage }}
           page={page}
-          loadTable={loadActiveList}
+          loadTable={loadActiveTasks}
           hasNextPage={activeHasNextPage}
           isAdminViewing={user.isAdmin}
         />
       )}
-
       {activeTableModals.add && (
         <Modal
           setIsOpen={() => toggleModalState('add', setActiveTableModals)}
@@ -134,7 +139,7 @@ export default function ActiveTable({
         >
           <AddTask
             setIsOpen={() => toggleModalState('add', setActiveTableModals)}
-            loadTask={loadActiveList}
+            loadTask={loadActiveTasks}
             userList={userList}
           />
         </Modal>
@@ -149,7 +154,7 @@ export default function ActiveTable({
             setIsOpen={() => toggleModalState('edit', setActiveTableModals)}
             selectedTask={selectedTask}
             userList={userList}
-            loadTask={loadActiveList}
+            loadTask={loadActiveTasks}
           />
         </Modal>
       )}
@@ -157,12 +162,12 @@ export default function ActiveTable({
         <ConfirmModal
           modalActionOnConfirm={() => {
             deleteTask(selectedTask);
-            loadActiveList(1);
+            loadActiveTasks(1);
           }}
           modalText="Görev silinsin mi?"
           modalTitle="Görevi Sil"
           modalSuccessText="Görev Silindi!"
-          modalToggle={() => toggleModalState('delete', setActiveTableModals)}
+          modalClose={() => closeModal('delete', setActiveTableModals)}
           modalConfirmButtonText="Sil"
         />
       )}
@@ -174,7 +179,7 @@ export default function ActiveTable({
           modalText="Görev tamamlansın mı?"
           modalTitle="Görevi Tamamla"
           modalSuccessText="Görev Tamamlandı!"
-          modalToggle={() => toggleModalState('complete', setActiveTableModals)}
+          modalClose={() => closeModal('complete', setActiveTableModals)}
           modalConfirmButtonText="Tamamla"
         />
       )}

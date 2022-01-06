@@ -5,7 +5,7 @@ import withReactContent from 'sweetalert2-react-content';
 export default function InfoModal({
   modalTitle = 'Info Buraya!',
   modalIcon = 'success',
-  modalToggle,
+  modalClose,
   modalConfirmButtonText = 'Tamam',
 }) {
   const InfoSwal = withReactContent(Swal);
@@ -18,7 +18,7 @@ export default function InfoModal({
       didOpen: () => {
         setTimeout(() => {
           InfoSwal.close();
-          modalToggle();
+          modalClose();
         }, 1500);
       },
     });

@@ -7,8 +7,8 @@ export default function ConfirmModal({
   modalTitle,
   modalText,
   modalSuccessText,
-  modalFailText,
-  modalToggle,
+  modalClose,
+  modalOpen,
   modalConfirmButtonText,
 }) {
   const ConfirmationSwal = withReactContent(Swal);
@@ -29,7 +29,7 @@ export default function ConfirmModal({
         confirmationSuccessAlert();
       } else {
         ConfirmationSwal.close();
-        modalToggle();
+        modalClose();
       }
     });
   };
@@ -42,7 +42,7 @@ export default function ConfirmModal({
       didOpen: () => {
         setTimeout(() => {
           ConfirmationSwal.close();
-          modalToggle();
+          modalClose();
         }, 1500);
       },
     });

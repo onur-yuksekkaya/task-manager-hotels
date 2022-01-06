@@ -15,7 +15,7 @@ import {
   headerWidths,
   historyRowCount,
 } from '../taskTableConfig';
-import { toggleModalState } from 'utils/utils';
+import { closeModal, findUserNames, toggleModalState } from 'utils/utils';
 
 export default function HistoryTable({
   userList,
@@ -30,23 +30,31 @@ export default function HistoryTable({
   const [isLoading, setLoading] = useState(true);
   const [historyHasNextPage, setHistoryHasNexPage] = useState(false);
   const [historyTableModals, setHistoryTableModals] = useState({
-    add: false,
     edit: false,
     delete: false,
   });
 
-  const loadHistoryList = async (pageNumber = 1) => {
+  const loadHistoryTasks = async (pageNumber = 1) => {
     setLoading(true);
-    const data = await TaskApi.getHistoryTasks({
-      page: pageNumber,
-      rowCount: historyRowCount,
-    });
-    if (data) {
-      setHistoryList(data.taskList);
+    const data = user.isAdmin
+      ? await TaskApi.getHistoryTasks({
+          page: pageNumber,
+          rowCount: historyRowCount,
+        })
+      : await TaskApi.getEmployeeHistoryTasks({
+          page: pageNumber,
+          rowCount: historyRowCount,
+          employeeId: user.id,
+        });
+    if (data && userList) {
+      setHistoryList(findUserNames(userList, data.taskList));
       setHistoryHasNexPage(data.hasNextPage);
     }
     setLoading(false);
   };
+
+  const goToNextPage = () => setPage(page + 1);
+  const goToPrevPage = () => setPage(page - 1);
 
   const historyTableActions = [
     {
@@ -67,12 +75,9 @@ export default function HistoryTable({
     },
   ];
 
-  const goToNextPage = () => setPage(page + 1);
-  const goToPrevPage = () => setPage(page - 1);
-
   useEffect(() => {
-    loadHistoryList(page);
-  }, [page]);
+    loadHistoryTasks(page);
+  }, [page, userList]);
 
   return (
     <>
@@ -81,52 +86,46 @@ export default function HistoryTable({
           <Loading color="text-indigo-600 my-52 mx-auto w-12 h-12" />
         </div>
       ) : (
-        <>
-          <Table
-            tableActions={historyTableActions}
-            tableHeaders={tableHeaders}
-            tableItems={historyList}
-            headerWidths={headerWidths}
-            selectedItem={selectedTask}
-            setSelectedItem={setSelectedTask}
-            pageChangers={{ goToNextPage, goToPrevPage }}
-            page={page}
-            loadTable={loadHistoryList}
-            hasNextPage={historyHasNextPage}
-            isAdminViewing={user.isAdmin}
+        <Table
+          tableActions={historyTableActions}
+          tableHeaders={tableHeaders}
+          tableItems={historyList}
+          headerWidths={headerWidths}
+          selectedItem={selectedTask}
+          setSelectedItem={setSelectedTask}
+          pageChangers={{ goToNextPage, goToPrevPage }}
+          page={page}
+          loadTable={loadHistoryTasks}
+          hasNextPage={historyHasNextPage}
+          isAdminViewing={user.isAdmin}
+        />
+      )}
+      {historyTableModals.edit && (
+        <Modal
+          setIsOpen={() => toggleModalState('edit', setHistoryTableModals)}
+          isOpen={historyTableModals.edit}
+          title="Görevi Düzenle"
+        >
+          <EditTask
+            setIsOpen={() => toggleModalState('edit', setHistoryTableModals)}
+            selectedTask={selectedTask}
+            userList={userList}
+            loadTask={loadHistoryTasks}
           />
-
-          {historyTableModals.edit && (
-            <Modal
-              setIsOpen={() => toggleModalState('edit', setHistoryTableModals)}
-              isOpen={historyTableModals.edit}
-              title="Görevi Düzenle"
-            >
-              <EditTask
-                setIsOpen={() =>
-                  toggleModalState('edit', setHistoryTableModals)
-                }
-                selectedTask={selectedTask}
-                userList={userList}
-                loadTask={loadHistoryList}
-              />
-            </Modal>
-          )}
-          {historyTableModals.delete && (
-            <ConfirmModal
-              modalActionOnConfirm={() => {
-                deleteTask(selectedTask);
-                loadHistoryList(1);
-              }}
-              modalText="Görev silinsin mi?"
-              modalTitle="Görevi Sil"
-              modalSuccessText="Görev Silindi!"
-              modalToggle={() =>
-                toggleModalState('delete', setHistoryTableModals)
-              }
-            />
-          )}
-        </>
+        </Modal>
+      )}
+      {historyTableModals.delete && (
+        <ConfirmModal
+          modalActionOnConfirm={() => {
+            deleteTask(selectedTask);
+            loadHistoryTasks(1);
+          }}
+          modalText="Görev silinsin mi?"
+          modalTitle="Görevi Sil"
+          modalSuccessText="Görev Silindi!"
+          modalClose={() => closeModal('delete', setHistoryTableModals)}
+          modalConfirmButtonText="Sil"
+        />
       )}
     </>
   );

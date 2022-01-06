@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 
 import TaskApi from 'api/services/task';
 import { editTaskSchema } from 'config/validationSchemas';
-import { getOnlyChangedInputs, toggleModalState } from 'utils/utils';
+import {
+  closeModal,
+  getOnlyChangedInputs,
+  toggleModalState,
+} from 'utils/utils';
 
 import Form from 'components/Form/Form';
 import TextInput from 'components/Form/TextInput';
@@ -112,8 +116,8 @@ export default function EditTask({
       {taskEditModals.success && (
         <InfoModal
           modalTitle="Görev Güncellendi!"
-          modalToggle={() => {
-            toggleModalState('success', setTaskEditModals);
+          closeModal={() => {
+            closeModal('success', setTaskEditModals);
           }}
         />
       )}
@@ -121,8 +125,8 @@ export default function EditTask({
         <InfoModal
           modalTitle="Değişen Bir Şey Yok"
           modalIcon="warning"
-          modalToggle={() => {
-            toggleModalState('noChange', setTaskEditModals);
+          modalClose={() => {
+            closeModal('noChange', setTaskEditModals);
           }}
         />
       )}
@@ -131,8 +135,8 @@ export default function EditTask({
         <InfoModal
           modalTitle="Görev Güncellenemedi!"
           modalIcon="error"
-          modalToggle={() => {
-            toggleModalState('fail', setTaskEditModals);
+          modalClose={() => {
+            closeModal('fail', setTaskEditModals);
           }}
         />
       )}

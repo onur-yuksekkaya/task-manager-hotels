@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import LoginApi from 'api/services/login';
 import { addUserSchema, registerUserSchema } from 'config/validationSchemas';
-import { toggleModalState } from 'utils/utils';
+import { closeModal, toggleModalState } from 'utils/utils';
 
 import Form from 'components/Form/Form';
 import TextInput from 'components/Form/TextInput';
@@ -90,8 +90,8 @@ export default function AddUser({ setIsOpen, loadUserData }) {
         <InfoModal
           modalTitle="Çalışan Eklendi!"
           modalIcon="success"
-          modalToggle={() => {
-            toggleModalState('success', setUserAddModals);
+          modalClose={() => {
+            closeModal('success', setUserAddModals);
           }}
         />
       )}
@@ -99,8 +99,8 @@ export default function AddUser({ setIsOpen, loadUserData }) {
         <InfoModal
           modalTitle="Çalışan Eklenemedi!"
           modalIcon="error"
-          modalToggle={() => {
-            toggleModalState('fail', setUserAddModals);
+          modalClose={() => {
+            closeModal('fail', setUserAddModals);
           }}
         />
       )}

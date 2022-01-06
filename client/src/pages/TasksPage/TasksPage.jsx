@@ -8,7 +8,7 @@ import HistoryTable from './components/HistoryTable';
 import { ClipboardCheckIcon, ClipboardListIcon } from '@heroicons/react/solid';
 import EmployeeApi from 'api/services/employee';
 import TaskApi from 'api/services/task';
-import { toggleModalState } from 'utils/utils';
+import { closeModal, toggleModalState } from 'utils/utils';
 import InfoModal from 'components/Modal/InfoModal';
 
 export default function TasksPage() {
@@ -88,8 +88,8 @@ export default function TasksPage() {
         <InfoModal
           modalTitle="Çalışan Listesi Güncellenemedi!"
           modalIcon="error"
-          modalToggle={() => {
-            toggleModalState('userFail', setTaskPageModals);
+          modalClose={() => {
+            closeModal('userFail', setTaskPageModals);
           }}
         />
       )}

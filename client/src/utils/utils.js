@@ -13,6 +13,13 @@ export const toggleModalState = (modal, toggleSetter) => {
   toggleSetter((prevState) => ({ ...prevState, [modal]: !prevState[modal] }));
 };
 
+export const closeModal = (modal, modalSetter) => {
+  modalSetter((prevState) => ({ ...prevState, [modal]: false }));
+};
+export const openModal = (modal, modalSetter) => {
+  modalSetter((prevState) => ({ ...prevState, [modal]: true }));
+};
+
 export const findUserNames = (userList, taskList) => {
   const returnedArray = [];
   return taskList.map((task, index) => {
@@ -21,7 +28,9 @@ export const findUserNames = (userList, taskList) => {
         const userFound = userList.find(
           (user) => user.id.toString() === userId
         );
-        return !!userFound ? `[${userFound.name} ${userFound.surname}]` : '';
+        return !!userFound
+          ? `[${userFound.name} ${userFound.surname}]`
+          : '[Çalışan Yok]';
       })
     );
     return { ...task, assigned: returnedArray[index] };
