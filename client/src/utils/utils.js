@@ -25,8 +25,8 @@ export const findUserNames = (userList, taskList) => {
     ...task,
     assigned: task.assigned.map((user) =>
       userList[user]
-        ? `${userList[user].name} ${userList[user].surname}, `
-        : 'Çalışan Yok,'
+        ? `${userList[user].name} ${userList[user].surname}`
+        : 'Çalışan Yok'
     ),
   }));
 };
