@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import LoginApi from 'api/services/login';
-import { addUserSchema, registerUserSchema } from 'config/validationSchemas';
+import { addUserSchema } from 'config/validationSchemas';
 import { closeModal, toggleModalState } from 'utils/utils';
 
 import Form from 'components/Form/Form';

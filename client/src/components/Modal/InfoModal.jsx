@@ -5,7 +5,6 @@ import withReactContent from 'sweetalert2-react-content';
 export default function InfoModal({
   modalTitle = 'Info Buraya!',
   modalIcon = 'success',
-  modalClose,
   modalConfirmButtonText = 'Tamam',
   timer = 1500,
 }) {
@@ -17,9 +16,6 @@ export default function InfoModal({
       icon: modalIcon,
       confirmButtonText: modalConfirmButtonText,
       timer,
-      willClose: () => {
-        modalClose();
-      },
     });
   };
 
