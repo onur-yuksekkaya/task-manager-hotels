@@ -7,6 +7,7 @@ export default function InfoModal({
   modalIcon = 'success',
   modalClose,
   modalConfirmButtonText = 'Tamam',
+  timer = 1500,
 }) {
   const InfoSwal = withReactContent(Swal);
 
@@ -15,10 +16,9 @@ export default function InfoModal({
       title: <strong>{modalTitle}</strong>,
       icon: modalIcon,
       confirmButtonText: modalConfirmButtonText,
-      didOpen: () => {
-        setTimeout(() => {
-          InfoSwal.close();
-        }, 1500);
+      timer,
+      willClose: () => {
+        modalClose();
       },
     });
   };
