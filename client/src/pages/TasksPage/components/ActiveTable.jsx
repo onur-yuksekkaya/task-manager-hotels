@@ -20,6 +20,7 @@ import {
 } from '@heroicons/react/solid';
 
 import { tableHeaders, headerWidths } from '../taskTableConfig';
+import CardTable from 'components/CardTable/CardTable';
 
 export default function ActiveTable({ userList }) {
   const { user } = useAuth();
@@ -44,9 +45,6 @@ export default function ActiveTable({ userList }) {
     setSelectedTask('');
     loadActiveTasks(1);
   };
-
-  const goToNextPage = () => setPage(page + 1);
-  const goToPrevPage = () => setPage(page - 1);
 
   const activeTableActions = [
     {
@@ -102,16 +100,15 @@ export default function ActiveTable({ userList }) {
           <Loading color="text-indigo-600 my-52 mx-auto w-12 h-12" />
         </div>
       ) : (
-        <Table
+        <CardTable
           tableActions={activeTableActions}
           tableHeaders={tableHeaders}
           tableItems={taskListWithNames}
           headerWidths={headerWidths}
           selectedItem={selectedTask}
           setSelectedItem={setSelectedTask}
-          pageChangers={{ goToNextPage, goToPrevPage }}
+          setPage={setPage}
           page={page}
-          loadTable={loadActiveTasks}
           hasNextPage={activeTasks.hasNextPage}
           isAdminViewing={user.isAdmin}
         />

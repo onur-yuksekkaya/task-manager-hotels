@@ -114,34 +114,37 @@ export default function UsersPage() {
           isAdminViewing={user.isAdmin}
         />
       )}
-      <Modal
-        setIsOpen={() => toggleModalState('add', setUserPageModals)}
-        isOpen={userPageModals.add}
-        title="Bir Çalışan Oluşturun"
-      >
-        <AddUser
+      {userPageModals.add && (
+        <Modal
           setIsOpen={() => toggleModalState('add', setUserPageModals)}
-          loadUserData={loadUserList}
-        />
-      </Modal>
-
-      <Modal
-        setIsOpen={() => toggleModalState('edit', setUserPageModals)}
-        isOpen={userPageModals.edit}
-        title="Çalışan Bilgilerini Düzenleyin"
-        onClose={() => {
-          setSelectedUser('');
-          setSelectedUserValues('');
-          toggleModalState('edit', setUserPageModals);
-        }}
-      >
-        <EditUser
-          selectedUser={selectedUser}
+          isOpen={userPageModals.add}
+          title="Bir Çalışan Oluşturun"
+        >
+          <AddUser
+            setIsOpen={() => toggleModalState('add', setUserPageModals)}
+            loadUserData={loadUserList}
+          />
+        </Modal>
+      )}
+      {userPageModals.edit && (
+        <Modal
           setIsOpen={() => toggleModalState('edit', setUserPageModals)}
-          userValues={selectedUserValues}
-          loadUserData={loadUserList}
-        />
-      </Modal>
+          isOpen={userPageModals.edit}
+          title="Çalışan Bilgilerini Düzenleyin"
+          onClose={() => {
+            setSelectedUser('');
+            setSelectedUserValues('');
+            toggleModalState('edit', setUserPageModals);
+          }}
+        >
+          <EditUser
+            selectedUser={selectedUser}
+            setIsOpen={() => toggleModalState('edit', setUserPageModals)}
+            userValues={selectedUserValues}
+            loadUserData={loadUserList}
+          />
+        </Modal>
+      )}
       {userPageModals.delete && (
         <ConfirmModal
           modalActionOnConfirm={() => {

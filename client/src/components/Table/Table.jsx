@@ -2,16 +2,15 @@ import React from 'react';
 import useTableHeaderWidth from 'hooks/useTableHeaderWidth';
 
 import TableBody from './TableBody';
-import TableButton from './TableButton';
 import TableHeader from './TableHeader';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import TableActionRow from './TableActionRow';
+
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 
 export default function Table({
   tableActions,
   tableHeaders,
   tableItems,
-  loadTable,
   headerWidths,
   hasNextPage,
   page,
@@ -23,7 +22,6 @@ export default function Table({
   const [widths, unit] = useTableHeaderWidth(tableHeaders, headerWidths);
 
   return (
-    //CONTEXT YAPILABILIR PROP GOMMEK YERINE
     <div className="flex flex-col w-full lg:w-[98%] gap-y-2">
       <TableActionRow
         tableActions={tableActions}

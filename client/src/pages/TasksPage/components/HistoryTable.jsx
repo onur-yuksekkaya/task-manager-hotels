@@ -13,6 +13,7 @@ import { PencilIcon, TrashIcon } from '@heroicons/react/solid';
 import { tableHeaders, headerWidths } from '../taskTableConfig';
 import { closeModal, findUserNames, toggleModalState } from 'utils/utils';
 import { useTask } from 'context/TaskContext';
+import CardTable from 'components/CardTable/CardTable';
 
 export default function HistoryTable({ userList }) {
   const { user } = useAuth();
@@ -67,16 +68,13 @@ export default function HistoryTable({ userList }) {
           <Loading color="text-indigo-600 my-52 mx-auto w-12 h-12" />
         </div>
       ) : (
-        <Table
+        <CardTable
           tableActions={historyTableActions}
-          tableHeaders={tableHeaders}
           tableItems={taskListWithNames}
-          headerWidths={headerWidths}
           selectedItem={selectedTask}
           setSelectedItem={setSelectedTask}
-          pageChangers={{ goToNextPage, goToPrevPage }}
+          setPage={setPage}
           page={page}
-          loadTable={loadHistoryTasks}
           hasNextPage={historyTasks.hasNextPage}
           isAdminViewing={user.isAdmin}
         />

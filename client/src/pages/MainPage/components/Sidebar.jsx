@@ -18,15 +18,17 @@ export default function Sidebar() {
   const { user, setUser } = useAuth();
 
   return (
-    <div className="sticky bottom-0  min-w-[16rem] max-w-full left-0 lg:static bg-white border border-gray-300 h-14 lg:h-full sm:basis-1/5 2xl:basis-1/6 sm:rounded-2xl shadow-lg flex justify-center lg:justify-start lg:flex-col items-center py-5 gap-x-10 gap-y-2">
-      <CollectionIcon className="lg:text-indigo-700 w-12 hidden lg:block" />
-      <HeadingSubtitle
-        text={'Otel Görev Takip Sistemi '}
-        customClass="hidden lg:block lg:text-indigo-700 text-center"
-      />
+    <div className="sticky bottom-0  min-w-[16rem] max-w-full left-0 lg:static bg-white border border-gray-300 h-14 lg:h-full sm:basis-1/5 2xl:basis-1/6 sm:rounded-2xl lg:rounded-none shadow-lg flex justify-center lg:justify-start lg:flex-col items-center py-5 gap-x-10 gap-y-2">
+      <div className="hidden lg:flex px-2 gap-x-2">
+        <CollectionIcon className="lg:text-indigo-700 w-12 hidden lg:block" />
+        <HeadingSubtitle
+          text="Otel Görev Takibi"
+          customClass="hidden lg:block lg:text-indigo-700 text-center "
+        />
+      </div>
       <SidebarButton
         text="Anasayfa"
-        customStyleClass="lg:bg-indigo-700 hover:bg-indigo-300 lg:hover:bg-indigo-900 text-indigo-700 lg:text-white lg:mt-auto"
+        customStyleClass="lg:mt-auto"
         onClick={() => {
           navigate('/');
         }}
@@ -34,7 +36,6 @@ export default function Sidebar() {
       />
       <SidebarButton
         text="Görevler"
-        customStyleClass="lg:bg-indigo-700 hover:bg-indigo-300 lg:hover:bg-indigo-900 text-indigo-700 lg:text-white"
         onClick={() => {
           navigate('tasks');
         }}
@@ -43,7 +44,7 @@ export default function Sidebar() {
       {user.isAdmin && (
         <SidebarButton
           text="Çalışanlar"
-          customStyleClass="lg:bg-indigo-700 hover:bg-indigo-300 lg:hover:bg-indigo-900 text-indigo-700 lg:text-white lg:mb-auto"
+          customStyleClass="lg:mb-auto"
           onClick={() => {
             navigate('users');
           }}
@@ -53,7 +54,7 @@ export default function Sidebar() {
 
       <SidebarButton
         text="Çıkış"
-        customStyleClass="lg:bg-indigo-700 hover:bg-indigo-300 lg:hover:bg-indigo-900 text-indigo-700 lg:text-white lg:mt-auto"
+        customStyleClass="lg:mt-auto"
         onClick={() => {
           setUser('');
         }}

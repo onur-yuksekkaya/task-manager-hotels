@@ -49,8 +49,8 @@ export default function EditTask({
     if (changedData) {
       const response = await TaskApi.updateTask(changedData);
       if (response) {
-        loadTask();
         toggleModalState('success', setTaskEditModals);
+        loadTask();
         setIsOpen();
       } else {
         toggleModalState('fail', setTaskEditModals);
@@ -119,7 +119,7 @@ export default function EditTask({
       {taskEditModals.success && (
         <InfoModal
           modalTitle="Görev Güncellendi!"
-          closeModal={() => {
+          modalClose={() => {
             closeModal('success', setTaskEditModals);
           }}
         />
